@@ -73,24 +73,50 @@ public class NoteManager : MonoBehaviour
     public void Notetransform()
     {
 
-
-        noteFloat[0] += Time.fixedDeltaTime;
-        if (noteFloat[0] > remainOfNote)
+        for(int i =0; i < noteFloat.Count; i++)
         {
-            noteObject[0].SetActive(true);
+            if(noteObject[i] == null)
+            {
+                break;
+            }
+            noteFloat[i] += Time.fixedDeltaTime;
+
+            if (noteFloat[i] > remainOfNote)
+            {
+                noteObject[i].SetActive(true);
+            }
+            noteFloat[i] %= remainOfNote;
         }
-        noteFloat[0] %= remainOfNote;
+
+
 
         // 길이를 시간으로 나누어서 노트가 이동하는 시간을 구함
         float speedOfNote = routeOfNote / remainOfNote;
 
         // 노트의 길이를 대입하기(노트의 속도 * 성공 시간)
         Vector3 size = new Vector3(speedOfNote * justOfNote, 100,0);
-        noteObject[0].GetComponent<RectTransform>().sizeDelta = size;
+        for (int i = 0; i < noteFloat.Count; i++)
+        {
+            if (noteObject[i] == null)
+            {
+                break;
+            }
+            noteObject[i].GetComponent<RectTransform>().sizeDelta = size;
+        }
+
 
         // 노트의 좌표를 대입하기(노트의 속도 * 노트가 지난 시간)
-        float moving = speedOfNote * noteFloat[0] - (routeOfNote * 0.5f);
-        noteObject[0].transform.localPosition = new Vector3(-moving, 0, 0);
+
+        for (int i = 0; i < noteFloat.Count; i++)
+        {
+            if (noteObject[i] == null)
+            {
+                break;
+            }
+            float moving = speedOfNote * noteFloat[i] - (routeOfNote * 0.5f);
+            noteObject[i].transform.localPosition = new Vector3(-moving, 0, 0);
+        }
+
         //noteCheck.transform.localPosition = new Vector3(speedOfNote * noteFloat[0]-750, 0, 0);
 
         float index = (noteCheckfloat-0.5f) * routeOfNote;
@@ -106,25 +132,25 @@ public class NoteManager : MonoBehaviour
 
     }
 
-    public void Check()
+    public void Check(int input)
     {
-        if(noteObject[0].activeSelf == false)
-        {
-            return;
-        }
+
 
         //Debug.Log(121);
         // 앞뒤로 절반씩 나눠서 범위에 들어오면 정타효과를 낸다
         // 정확한 지점은 noteCheckfloat * remainOfNote
         float index = (noteCheckfloat) * remainOfNote;
         //Debug.Log(index);
-        if (index + (justOfNote * 0.5f) > noteFloat[0] &&
-            index - (justOfNote * 0.5f) < noteFloat[0])
+        if (index + (justOfNote * 0.5f) > noteFloat[input] &&
+            index - (justOfNote * 0.5f) < noteFloat[input] &&
+            noteObject[input].activeSelf == true)
         {
             damageManager.SwordClip(Random.Range(3, 4));
-            noteObject[0].SetActive(false);
+            noteObject[input].SetActive(false);
         }
         else 
-        { }
+        {
+            damageManager.MissClip();
+        }
     }
 }

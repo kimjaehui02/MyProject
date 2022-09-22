@@ -91,7 +91,11 @@ public class BattleManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            NoteManager.Check();
+            for (int i = 0; i < 2; i++)
+            {
+                NoteManager.Check(i); 
+            }
+
         }
     }
 }
