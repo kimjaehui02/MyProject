@@ -10,8 +10,31 @@ public class DamageManager : MonoBehaviour
     public Animator Animator2;
 
     public List<AudioClip> audioClips;
-    
 
+
+    public void CalculationOfDamage(List<StructOfFight> structOfFight) 
+    {
+
+        for (int  i =0; i < structOfFight.Count; i++)
+        {
+            //Debug.Log(structOfFight[i].structOfDamage.damage);
+            structOfFight[i].attacker.Hp += structOfFight[i].structOfDamage.damage;
+            structOfFight[i].defender.Hp += structOfFight[i].structOfDamage.damageOfStamina;
+        }
+        
+    }
+
+    public void CalculationOfJust(List<StructOfFight> structOfFight)
+    {
+
+        for (int i = 0; i < structOfFight.Count; i++)
+        {
+            //Debug.Log(structOfFight[i].structOfDamage.damage);
+            structOfFight[i].attacker.Hp += structOfFight[i].structOfDamage.damage;
+            structOfFight[i].defender.Hp += structOfFight[i].structOfDamage.damageOfStamina;
+        }
+
+    }
 
     public void SwordClip(int input)
     {
@@ -26,4 +49,9 @@ public class DamageManager : MonoBehaviour
         Animator.SetTrigger("Attack");
     }
 
+
+    IEnumerator Shake()
+    {
+        yield return new WaitForSecondsRealtime(0.05f);
+    }
 }
