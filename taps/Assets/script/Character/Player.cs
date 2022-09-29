@@ -17,11 +17,17 @@ public class Player : ParentsOfParty
 
 
 
+    private void Awake()
+    {
+        StructOfDamage ofDamage = new StructOfDamage(1, 1, false, 2);
 
+        StructOfDamages = new()
+        { ofDamage };
+    }
     public void Update()
     {
         //Debug.Log(name);
-        characterUi.UpdateOfCharacterUi(Hp);
+        ParentsUpdate();
     }
 
     public void Active()

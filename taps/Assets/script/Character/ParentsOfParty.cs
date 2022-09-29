@@ -18,5 +18,14 @@ public class ParentsOfParty : MonoBehaviour
     [field: SerializeField]
     public int Stamina { get; set; }
 
+    [field: SerializeField]
+    public bool Dead { get; set; }
+
     public List<StructOfDamage> StructOfDamages { get; set; }
+
+    public void ParentsUpdate()
+    {
+        //Debug.Log(name);
+        characterUi.UpdateOfCharacterUi(Hp, Stamina);
+    }
 }

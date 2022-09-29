@@ -69,16 +69,20 @@ public class NoteManager : MonoBehaviour
     /// <summary>
     /// 구조체 리스트리스트
     /// </summary>
-    public List<List<StructOfFight>> FightOfListList { get; set; }
+    public List<List<StructOfFight>> AttackListOfEnemy { get; set; }
+
+    public List<List<StructOfFight>> AttackListOfPlayer { get; set; }
 
     public ParentsOfParty OfParty;
     public ParentsOfParty OfParty2;
 
     #endregion
     #region Default
+
     private void Start()
     {
-        FightOfListList = new List<List<StructOfFight>>();
+        AttackListOfEnemy = new List<List<StructOfFight>>();
+        AttackListOfPlayer = new List<List<StructOfFight>>();
         //testStart();
     }
 
@@ -98,24 +102,24 @@ public class NoteManager : MonoBehaviour
     }
     #endregion
 
-    public void testStart(List<List<StructOfFight>> fightOfListList)
+    public void testStart(List<List<StructOfFight>> AttackListOfEnemy)
     {
-        fightOfListList = new List<List<StructOfFight>>();
-        fightOfListList.Add(null);
-        fightOfListList.Add(null);
-        fightOfListList.Add(null);
-        fightOfListList.Add(null);
-        fightOfListList.Add(null);
-        fightOfListList.Add(null);
-        fightOfListList.Add(null);
-        fightOfListList.Add(null);
-        fightOfListList[0] = new List<StructOfFight>();
-        fightOfListList[1] = new List<StructOfFight>();
+        AttackListOfEnemy = new List<List<StructOfFight>>();
+        AttackListOfEnemy.Add(null);
+        AttackListOfEnemy.Add(null);
+        AttackListOfEnemy.Add(null);
+        AttackListOfEnemy.Add(null);
+        AttackListOfEnemy.Add(null);
+        AttackListOfEnemy.Add(null);
+        AttackListOfEnemy.Add(null);
+        AttackListOfEnemy.Add(null);
+        AttackListOfEnemy[0] = new List<StructOfFight>();
+        AttackListOfEnemy[1] = new List<StructOfFight>();
         StructOfDamage @struct = new StructOfDamage(2, 3, false);
         StructOfDamage @struct2 = new StructOfDamage(200, 33, false);
-        fightOfListList[0].Add(new StructOfFight(OfParty, OfParty2, @struct));
-        fightOfListList[0].Add(new StructOfFight(OfParty, OfParty2, @struct2));
-        fightOfListList[1].Add(new StructOfFight(OfParty, OfParty2, @struct));
+        AttackListOfEnemy[0].Add(new StructOfFight(OfParty, OfParty2, @struct));
+        AttackListOfEnemy[0].Add(new StructOfFight(OfParty, OfParty2, @struct2));
+        AttackListOfEnemy[1].Add(new StructOfFight(OfParty, OfParty2, @struct));
         //test = gameObject.AddComponent<ParentsOfParty>();
         //InitializationOfNotefunction();
     }
@@ -200,8 +204,8 @@ public class NoteManager : MonoBehaviour
 
     public void NoteActive()
     {
-        Debug.Log(FightOfListList.Count);
-        for (int i = 0; i < FightOfListList.Count; i++)
+        Debug.Log(AttackListOfEnemy.Count);
+        for (int i = 0; i < AttackListOfEnemy.Count; i++)
         {
             objectOfNote[i].SetActive(true);
         }
@@ -235,11 +239,11 @@ public class NoteManager : MonoBehaviour
                 objectOfNote[i].activeSelf == true)
             {
                 // 무작위로 소리클립을 재생합니다
-                damageManager.SwordClip(Random.Range(3, 5));
+                //damageManager.SwordClip(Random.Range(3, 5));
                 // 성공했으니 노트를 비활성화 합니다
                 objectOfNote[i].SetActive(false);
                 // 데미지를 계산하여 입힙니다
-                damageManager.CalculationOfDamage(FightOfListList[i]);
+                damageManager.CalculationOfDamage(AttackListOfEnemy[i]);
                 missCheck = true;
             }
             // 정확히 성공하지 못했다면 평범하게라도 성공했는지 뭍습니다
@@ -247,12 +251,12 @@ public class NoteManager : MonoBehaviour
                     index - (normalOfNote * 0.55f) < floatOfNote[i] &&
                     objectOfNote[i].activeSelf == true)
             {
-                damageManager.SwordClip(Random.Range(3, 5));
+                //damageManager.SwordClip(Random.Range(3, 5));
                 objectOfNote[i].SetActive(false);
                 missCheck = true;
 
                 // 데미지를 계산하여 입힙니다
-                damageManager.CalculationOfDamage(FightOfListList[i]);
+                damageManager.CalculationOfDamage(AttackListOfEnemy[i]);
 
             }
 

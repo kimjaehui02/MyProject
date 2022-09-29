@@ -12,9 +12,10 @@ public class CharacterUi : MonoBehaviour
 
     public List<Color> colorOfUi;
 
-    public void UpdateOfCharacterUi(int Hp)
+    public void UpdateOfCharacterUi(int Hp, int Sta)
     {
         HpManage(Hp);
+        StaminaManage(Sta);
     }
 
     public void HpManage(int inputHp)
@@ -91,12 +92,12 @@ public class CharacterUi : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            SpriteRenderersOfHp[i].color = colorOfBase;
+            SpriteRenderersOfSta[i].color = colorOfBase;
         }
 
         for (int i = 0; i < leftOfHp; i++)
         {
-            SpriteRenderersOfHp[i].color = colorOfBig;
+            SpriteRenderersOfSta[i].color = colorOfBig;
         }
 
     }
