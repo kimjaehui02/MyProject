@@ -5,75 +5,33 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     #region 매니저들
-    public DamageManager damageManager;
+    public DamageManager DamageManager;
 
     public NoteManager NoteManager;
 
     public SkillManager SkillManager;
-    #endregion
 
-    #region 오브젝트들
-
-    public GameObject teamOfPlayer;
-
-    public GameObject teamOfEnemy;
-
-    [field: SerializeField]
-    /// <summary>
-    /// 아군 파티
-    /// </summary>
-    public List<GameObject> PartyOfPlayer { get; set; }
-
-    [field: SerializeField]
-    /// <summary>
-    /// 적군 파티
-    /// </summary>
-    public List<GameObject> PartyOfEnemy { get; set; }
-
-    /// <summary>
-    /// ui를 가리키는 화살표
-    /// </summary>
-    public GameObject arrowOfPhase;
-    #endregion
-
-    #region 변수들
-
-    #region 전투 변수용
-    /// <summary>
-    /// 남은 공격 횟수
-    /// </summary>
-    [field: SerializeField]
-    public float pointOfAttack { get; set; }
-
+    public UiManager UiManager;
 
 
     #endregion
 
-    #region 페이즈용
-
-    public enum Phase { Standby, Main, BattleForEnemy, BattleForPlayer, End }
-
-    public int intOfPhase;
-
-    public List<Vector3> vector3OfPhase;
-
-    #endregion
-
-    #endregion
 
     #region Default
     private void Awake()
     {
         for (int  i=0; i< 4; i++)
         {
-            PartyOfPlayer[i] = teamOfPlayer.transform.GetChild(i).gameObject;
-            PartyOfEnemy[i] = teamOfEnemy.transform.GetChild(i).gameObject;
+            UiManager.PartyOfPlayer[i] = UiManager.teamOfPlayer.transform.GetChild(i).gameObject;
+            UiManager.exampleOfPlayerList[i] = UiManager.teamOfPlayer.transform.GetChild(i).gameObject;
+            UiManager.PartyOfEnemy[i] = UiManager.teamOfEnemy.transform.GetChild(i).gameObject;
         }
+
     }
 
     private void Start()
     {
-        StartCoroutine(Shake((int)Phase.Standby));
+        StartCoroutine(Shake((int)UiManager.Phase.Standby));
     }
 
     private void Update()
@@ -81,6 +39,7 @@ public class BattleManager : MonoBehaviour
         NoteManager.NoteManagerUpdate();
         Check();
         UiOfPhase();
+        PlaceOfParty();
     }
 
     private void FixedUpdate()
@@ -89,6 +48,14 @@ public class BattleManager : MonoBehaviour
     }
 
     #endregion
+
+    /// <summary>
+    /// 개전
+    /// </summary>
+    public void BattleStart()
+    {
+
+    }
 
     #region 페이즈들
     /// <summary>
@@ -101,7 +68,7 @@ public class BattleManager : MonoBehaviour
         
 
 
-        StartCoroutine(Shake((int)Phase.Main));
+        StartCoroutine(Shake((int)UiManager.Phase.Main));
     }
 
     /// <summary>
@@ -109,66 +76,17 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void MainPhase()
     {
-        
+
 
         //List<List<StructOfFight>> structOfFights = new List<List<StructOfFight>>();
 
-        // 적의 공격들이 얼마나 올지 표시합니다
-        for (int i = 0; i < PartyOfEnemy.Count; i++)
-        {
-            // 먼저 파티에 있는 스크립트를 가져오고
-            ParentsOfParty ofParty = PartyOfEnemy[i].GetComponent<ParentsOfParty>();
-
-            // 해당 대상이 죽어 있다면 넘어가고
-            if (ofParty.Dead == true)
-            {
-                continue;
-            }
-
-            // ofParty 스크립트가 가진 데미지 구조체 리스트를 가져오고
-            List<StructOfDamage> ofDamages = ofParty.StructOfDamages;
-
-
-            // 이 부분이 공격을 지정합니다 가중치 등의 이유로 수정을 원한다면 여기를 바꿔야 합니다
-
-            // ofDamages 구조체리스트 중에서 랜덤으로 1개 구조체를 골라 인트로 저장합니다
-            int randomattack = Random.Range(0, ofDamages.Count);
-
-
-            // ofDamages 구조체 리스트에 존재하는 randomattack번째 구조체가 numberOfNote를 가져옵니다
-            int notees = ofDamages[randomattack].numberOfNote;
-
-            // notees 숫자만큼 노트를 생성하기위해 반복문을 돌리고 
-            for (int ii = 0; ii < notees; ii++)
-            {
-                // StructOfFight 구조체를 만들어서 노트 리스트의 위치에 맞는 공격자와 방어자, randomattack번쨰의 데미지 구조체를 넣어줍니다
-                StructOfFight ofFight = new(ofParty, PartyOfPlayer[i].GetComponent<ParentsOfParty>(), ofDamages[randomattack]);
-
-
-                // 이부분이 노트 1개에 구조체 1개를 넣는 부분입니다
-                // 노트1개에 다른 구조체를 넣고 싶다면 수정해 줍니다
-
-                // ofFight를 리스트화 해서 넣어줍니다
-                List<StructOfFight> ofFights = new()
-                {
-                    ofFight
-                };
-
-                // 그리고 해당 ofFight구조체를 넣어줍니다 
-                NoteManager.AttackListOfEnemy.Add(ofFights);
-                //Debug.Log(NoteManager.AttackListOfEnemy.Count);
-                // 구조체를 넣어줬으니 넣어준 만큼 노트를 활성화 시킵니다
-
-            }
-
-
-        }
+        EnemyStart();
 
         // 아군들의 기본 공격도 저장합니다
-        for (int i = 0; i < PartyOfEnemy.Count; i++)
+        for (int i = 0; i < UiManager.PartyOfEnemy.Count; i++)
         {
             // 먼저 파티에 있는 스크립트를 가져오고
-            ParentsOfParty ofParty = PartyOfPlayer[i].GetComponent<ParentsOfParty>();
+            ParentsOfParty ofParty = UiManager.PartyOfPlayer[i].GetComponent<ParentsOfParty>();
 
             // 해당 대상이 죽어 있다면 넘어가고
             if (ofParty.Dead == true)
@@ -193,7 +111,7 @@ public class BattleManager : MonoBehaviour
             for (int ii = 0; ii < notees; ii++)
             {
                 // StructOfFight 구조체를 만들어서 노트 리스트의 위치에 맞는 공격자와 방어자, randomattack번쨰의 데미지 구조체를 넣어줍니다
-                StructOfFight ofFight = new(ofParty, PartyOfEnemy[i].GetComponent<ParentsOfParty>(), ofDamages[randomattack]);
+                StructOfFight ofFight = new(ofParty, UiManager.PartyOfEnemy[i].GetComponent<ParentsOfParty>(), ofDamages[randomattack]);
 
 
                 // 이부분이 노트 1개에 구조체 1개를 넣는 부분입니다
@@ -217,7 +135,7 @@ public class BattleManager : MonoBehaviour
 
         //Debug.Log(223232323);
 
-        StartCoroutine(Shake((int)Phase.BattleForEnemy));
+        StartCoroutine(Shake((int)UiManager.Phase.BattleForEnemy));
     }
 
     /// <summary>
@@ -231,7 +149,7 @@ public class BattleManager : MonoBehaviour
 
         NoteManager.NoteActive();
 
-        StartCoroutine(Shake((int)Phase.End));
+        StartCoroutine(Shake((int)UiManager.Phase.End));
     }
 
     public void BattlePhase2()
@@ -243,7 +161,7 @@ public class BattleManager : MonoBehaviour
 
 
 
-        StartCoroutine(Shake((int)Phase.End));
+        StartCoroutine(Shake((int)UiManager.Phase.End));
     }
 
     public void EndPhase()
@@ -253,31 +171,107 @@ public class BattleManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 적들의 공격을 표시함
+    /// </summary>
+    public void EnemyStart()
+    {
+        // 적의 공격들이 얼마나 올지 표시합니다
+        for (int i = 0; i < UiManager.PartyOfEnemy.Count; i++)
+        {
+            // 먼저 파티에 있는 스크립트를 가져오고
+            ParentsOfParty ofParty = UiManager.PartyOfEnemy[i].GetComponent<ParentsOfParty>();
 
-    #endregion
+            // 해당 대상이 죽어 있다면 넘어가고
+            if (ofParty.Dead == true)
+            {
+                continue;
+            }
+
+            // ofParty 스크립트가 가진 데미지 구조체 리스트를 가져오고
+            List<StructOfDamage> ofDamages = ofParty.StructOfDamages;
+
+
+            // 이 부분이 공격을 지정합니다 가중치 등의 이유로 수정을 원한다면 여기를 바꿔야 합니다
+
+            // ofDamages 구조체리스트 중에서 랜덤으로 1개 구조체를 골라 인트로 저장합니다
+            int randomattack = Random.Range(0, ofDamages.Count);
+
+
+            // ofDamages 구조체 리스트에 존재하는 randomattack번째 구조체가 numberOfNote를 가져옵니다
+            int notees = ofDamages[randomattack].numberOfNote;
+
+            // notees 숫자만큼 노트를 생성하기위해 반복문을 돌리고 
+            for (int ii = 0; ii < notees; ii++)
+            {
+                // StructOfFight 구조체를 만들어서 노트 리스트의 위치에 맞는 공격자와 방어자, randomattack번쨰의 데미지 구조체를 넣어줍니다
+                StructOfFight ofFight = new(ofParty, UiManager.PartyOfPlayer[i].GetComponent<ParentsOfParty>(), ofDamages[randomattack]);
+
+
+                // 이부분이 노트 1개에 구조체 1개를 넣는 부분입니다
+                // 노트1개에 다른 구조체를 넣고 싶다면 수정해 줍니다
+
+                // ofFight를 리스트화 해서 넣어줍니다
+                List<StructOfFight> ofFights = new()
+                {
+                    ofFight
+                };
+
+                // 그리고 해당 ofFight구조체를 넣어줍니다 
+                NoteManager.AttackListOfEnemy.Add(ofFights);
+                //Debug.Log(NoteManager.AttackListOfEnemy.Count);
+                // 구조체를 넣어줬으니 넣어준 만큼 노트를 활성화 시킵니다
+
+            }
+
+
+        }
+    }
 
     /// <summary>
     /// 페이즈를 보여주는 ui를 조절함
     /// </summary>
     public void UiOfPhase()
     {
-        arrowOfPhase.transform.localPosition = vector3OfPhase[intOfPhase];
+        UiManager.arrowOfPhase.transform.localPosition = UiManager.vector3OfPhase[UiManager.intOfPhase];
+    }
+    #endregion
+
+
+    /// <summary>
+    /// 리스트에 따라서 파티원을 좌표에 맞게 둡니다
+    /// </summary>
+    public void PlaceOfParty()
+    {
+        if(UiManager.boolOfExamplePlayer == true)
+        {
+            // 위치를 리스트 순서에 맞게 둡니다
+            for (int i = 0; i < UiManager.PartyOfPlayer.Count; i++)
+            {
+                UiManager.exampleOfPlayerList[i].transform.localPosition = UiManager.listOfPlayerTransform[i];
+            }
+        }
+        else
+        {
+            // 위치를 리스트 순서에 맞게 둡니다
+            for (int i = 0; i < UiManager.PartyOfPlayer.Count; i++)
+            {
+                UiManager.PartyOfPlayer[i].transform.localPosition = UiManager.listOfPlayerTransform[i];
+            }
+        }
     }
 
     /// <summary>
-    /// 적들의 공격을 표시함
+    /// ui에 달린 버튼이 작동할 함수입니다
     /// </summary>
-    public void EnemyStart()
+    /// <param name="input"></param>
+    public void ChangeButton1(int input)
     {
-
     }
 
-    /// <summary>
-    /// 개전
-    /// </summary>
-    public void BattleStart()
+    public void ChangeButton2(int input)
     {
-        
+
     }
 
     public void Check()
@@ -289,6 +283,30 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    #region 플레이어 행동스택
+
+    public void ESC()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            UiManager.stackOfActs.Pop();
+        }
+
+    }
+
+    public void PushOfStack()
+    {
+
+
+    }
+
+
+    #endregion
+
+
+    #region 코루틴
+
+
     IEnumerator Shake(int input)
     {
         yield return new WaitForSecondsRealtime(0.5f);
@@ -296,67 +314,103 @@ public class BattleManager : MonoBehaviour
         switch (input)
         {
             default:
-            case (int)Phase.Standby:
-                intOfPhase = (int)Phase.Standby;
+            case (int)UiManager.Phase.Standby:
+                UiManager.intOfPhase = (int)UiManager.Phase.Standby;
                 StandbyPhase();
                 break;
-            case (int)Phase.Main:
-                intOfPhase = (int)Phase.Main;
+            case (int)UiManager.Phase.Main:
+                UiManager.intOfPhase = (int)UiManager.Phase.Main;
                 MainPhase();
                 break;
-            case (int)Phase.BattleForEnemy:
-                intOfPhase = (int)Phase.BattleForEnemy;
+            case (int)UiManager.Phase.BattleForEnemy:
+                UiManager.intOfPhase = (int)UiManager.Phase.BattleForEnemy;
                 BattlePhase1();
                 break;
-            case (int)Phase.BattleForPlayer:
-                intOfPhase = (int)Phase.BattleForPlayer;
+            case (int)UiManager.Phase.BattleForPlayer:
+                UiManager.intOfPhase = (int)UiManager.Phase.BattleForPlayer;
                 BattlePhase2();
                 break;
-            case (int)Phase.End:
-                intOfPhase = (int)Phase.End;
+            case (int)UiManager.Phase.End:
+                UiManager.intOfPhase = (int)UiManager.Phase.End;
                 EndPhase();
                 break;
 
         }
 
     }
+
+    IEnumerator flicker(SpriteRenderer color, int input = 255, bool dark = true)
+    {
+        yield return new WaitForSeconds(0.05f);
+        //Debug.Log(123);
+
+        if(UiManager.boolOfExamplePlayer == false)
+        {
+            color.color = new Color(255 / 255f, 255 / 255f, 255 / 255f, 255 / 255f);
+            yield break;
+        }
+
+        if(dark == true)
+        {
+            // 투명하게 만듭니다
+            input -= 12;
+
+
+            // 너무 투명하다면 되돌립니다
+            if(input < 100)
+            {
+                dark = !dark;
+            }
+
+
+        }
+        else
+        {
+            // 투명하게 만듭니다
+            input += 12;
+
+
+            // 너무 투명하다면 되돌립니다
+            if (input > 255)
+            {
+                dark = !dark;
+            }
+        }
+        // 투명한 색을 적용시킵니다
+        color.color = new Color(255 / 255f, 255 / 255f, 255 / 255f, input / 255f);
+
+        // 재실행합니다
+        StartCoroutine(flicker(color, input, dark));
+
+    }
+
+    #endregion
 }
 
 
-/*
-#region notes
-/// <summary>
-/// 노트 오브젝트 관리
-/// </summary>
-public List<GameObject> notes;
+public struct StruckOfAct
+{
+    public enum typeOfAct
+    {
+        move, attack
+    }
+    public int type;
 
-/// <summary>
-/// 노트들의 이론상 좌표값
-/// </summary>
-public List<float> noteTrans;
+    public int attacker;
 
-/// <summary>
-/// 노트가 지나가는데 걸리는 시간
-/// </summary>
-public float noteTime;
+    public int defender;
 
-/// <summary>
-/// 노트가 정확히 체크되는 시간
-/// </summary>
-public float noteJust;
 
-/// <summary>
-/// 노트가 성공은 하는시간
-/// </summary>
-public float noteSafe;
 
-/// <summary>
-/// 노트가 지나다니는 길의 크기
-/// </summary>
-public float noteBase;
+    public StruckOfAct(int att, int def, int typ)
+    {
+        attacker = att;
+        defender = def;
+        type = typ;
+    }
 
-#endregion
-*/
+}
+
 
 // 전투의 진행
 
