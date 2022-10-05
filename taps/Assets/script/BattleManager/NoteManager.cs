@@ -21,26 +21,32 @@ public class NoteManager : MonoBehaviour
     /// </summary>
     //public List<functionOfNote> functionOfNotes;
 
+    #region 운용 오브젝트들
     /// <summary>
     /// 노트의 체크지점
     /// </summary>
     public GameObject lineOfNote;
 
     /// <summary>
+    /// 노트 오브젝트 관리
+    /// </summary>
+    public List<GameObject> objectOfNote;
+    #endregion
+
+    #region 운용 변수들
+
+    /// <summary>
     /// 노트의 체크지점 백분율
     /// </summary>
     public float noteCheckfloat;
 
-    /// <summary>
-    /// 노트 오브젝트 관리
-    /// </summary>
-    public List<GameObject> objectOfNote;
+
 
     /// <summary>
     /// 노트들의 이론상 좌표값
     /// </summary>
     public List<float> floatOfNote;
-    
+
     /// <summary>
     /// 적이 몇개의 노트로 공격을 오는지 알려줍니다
     /// </summary>
@@ -66,6 +72,12 @@ public class NoteManager : MonoBehaviour
     /// </summary>
     public float normalOfNote;
 
+    #endregion
+
+
+
+
+
     /// <summary>
     /// 구조체 리스트리스트
     /// </summary>
@@ -73,6 +85,9 @@ public class NoteManager : MonoBehaviour
 
     public List<List<StructOfFight>> AttackListOfPlayer { get; set; }
 
+    /// <summary>
+    /// 위의 두 리스트들을 넣기 위해서 
+    /// </summary>
     public ParentsOfParty OfParty;
     public ParentsOfParty OfParty2;
 
@@ -204,7 +219,7 @@ public class NoteManager : MonoBehaviour
 
     public void NoteActive()
     {
-        Debug.Log(AttackListOfEnemy.Count);
+        //Debug.Log(AttackListOfEnemy.Count);
         for (int i = 0; i < AttackListOfEnemy.Count; i++)
         {
             objectOfNote[i].SetActive(true);

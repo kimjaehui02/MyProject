@@ -66,7 +66,17 @@ public class UiManager : MonoBehaviour
 
     #region 스킬창
 
+    public Transform parrentOfSkill;
+
+    /// <summary>
+    /// 스킬의 버튼오브젝트들
+    /// </summary>
     public List<List<GameObject>> listListGameObjectOfSkills;
+
+    /// <summary>
+    /// 그 오브젝트들의 버튼 컴포넌트
+    /// </summary>
+    public List<List<Button>> listListButtonOfSkills;
 
     #endregion
 
@@ -83,7 +93,7 @@ public class UiManager : MonoBehaviour
 
     #region 플레이어 행동 스택
 
-    public Stack<StruckOfAct> stackOfActs;
+    public List<StruckOfAct> stackOfActs;
 
     #endregion
 
@@ -104,11 +114,36 @@ public class UiManager : MonoBehaviour
     /// </summary>
     public List<Vector3> listOfPlayerTransform;
 
-    /// <summary>
-    /// 지금 미리보기로 보여줄건지 묻습니다
-    /// </summary>
-    public bool boolOfExamplePlayer;
 
+
+
+    public enum EnumOfUi
+    {
+        AllSkill, MoveSkill, TargetSkill ,Note, nonPlayable
+    }
+
+
+    /// <summary>
+    /// Ui를 보여줄 방식입니다
+    /// </summary>
+    public int intOfUi;
+
+
+    /// <summary>
+    /// 교체할 번호입니다
+    /// </summary>
+    public int intOfChange;
+
+    /// <summary>
+    /// 플레이어의 행동포인트입니다;
+    /// </summary>
+    public List<bool> vs;
+    #endregion
+
+    #region Ui들의 큰 묶음
+
+    public GameManager skillUis;
+    public GameObject noteUis;
 
     #endregion
 }
