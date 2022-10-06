@@ -79,11 +79,14 @@ public class NoteManager : MonoBehaviour
 
 
     /// <summary>
-    /// 구조체 리스트리스트
+    /// 아군자리에 적용될 공격들을 담은 구조체 리스트입니다
     /// </summary>
-    public List<List<StructOfFight>> AttackListOfEnemy { get; set; }
+    public List<List<StructOfFight>> List2StructOfFightOfCastEnemy { get; set; }
 
-    public List<List<StructOfFight>> AttackListOfPlayer { get; set; }
+    /// <summary>
+    /// 적군자리에 적용될 공격들을 담은 구조체 리스트입니다
+    /// </summary>
+    public List<List<StructOfFight>> List2StructOfFightOfCastPlayer { get; set; }
 
     /// <summary>
     /// 위의 두 리스트들을 넣기 위해서 
@@ -96,8 +99,8 @@ public class NoteManager : MonoBehaviour
 
     private void Start()
     {
-        AttackListOfEnemy = new List<List<StructOfFight>>();
-        AttackListOfPlayer = new List<List<StructOfFight>>();
+        List2StructOfFightOfCastEnemy = new List<List<StructOfFight>>();
+        List2StructOfFightOfCastPlayer = new List<List<StructOfFight>>();
         //testStart();
     }
 
@@ -117,24 +120,24 @@ public class NoteManager : MonoBehaviour
     }
     #endregion
 
-    public void testStart(List<List<StructOfFight>> AttackListOfEnemy)
+    public void testStart(List<List<StructOfFight>> List2StructOfFightOfCastEnemy)
     {
-        AttackListOfEnemy = new List<List<StructOfFight>>();
-        AttackListOfEnemy.Add(null);
-        AttackListOfEnemy.Add(null);
-        AttackListOfEnemy.Add(null);
-        AttackListOfEnemy.Add(null);
-        AttackListOfEnemy.Add(null);
-        AttackListOfEnemy.Add(null);
-        AttackListOfEnemy.Add(null);
-        AttackListOfEnemy.Add(null);
-        AttackListOfEnemy[0] = new List<StructOfFight>();
-        AttackListOfEnemy[1] = new List<StructOfFight>();
+        List2StructOfFightOfCastEnemy = new List<List<StructOfFight>>();
+        List2StructOfFightOfCastEnemy.Add(null);
+        List2StructOfFightOfCastEnemy.Add(null);
+        List2StructOfFightOfCastEnemy.Add(null);
+        List2StructOfFightOfCastEnemy.Add(null);
+        List2StructOfFightOfCastEnemy.Add(null);
+        List2StructOfFightOfCastEnemy.Add(null);
+        List2StructOfFightOfCastEnemy.Add(null);
+        List2StructOfFightOfCastEnemy.Add(null);
+        List2StructOfFightOfCastEnemy[0] = new List<StructOfFight>();
+        List2StructOfFightOfCastEnemy[1] = new List<StructOfFight>();
         StructOfDamage @struct = new StructOfDamage(2, 3, false);
         StructOfDamage @struct2 = new StructOfDamage(200, 33, false);
-        AttackListOfEnemy[0].Add(new StructOfFight(OfParty, OfParty2, @struct));
-        AttackListOfEnemy[0].Add(new StructOfFight(OfParty, OfParty2, @struct2));
-        AttackListOfEnemy[1].Add(new StructOfFight(OfParty, OfParty2, @struct));
+        List2StructOfFightOfCastEnemy[0].Add(new StructOfFight(OfParty, OfParty2, @struct));
+        List2StructOfFightOfCastEnemy[0].Add(new StructOfFight(OfParty, OfParty2, @struct2));
+        List2StructOfFightOfCastEnemy[1].Add(new StructOfFight(OfParty, OfParty2, @struct));
         //test = gameObject.AddComponent<ParentsOfParty>();
         //InitializationOfNotefunction();
     }
@@ -183,8 +186,8 @@ public class NoteManager : MonoBehaviour
         float speedOfNote = routeOfNote / remainOfNote;
 
         // 노트의 길이를 대입하기(노트의 속도 * 성공 시간)
-        Vector3 size = new Vector3(speedOfNote * justOfNote, 100, 0);
-        Vector3 size2 = new Vector3(speedOfNote * normalOfNote, 100, 0);
+        Vector3 size = new (speedOfNote * justOfNote, 100, 0);
+        Vector3 size2 = new (speedOfNote * normalOfNote, 100, 0);
         for (int i = 0; i < floatOfNote.Count; i++)
         {
             if (objectOfNote[i].activeSelf == false)
@@ -219,8 +222,8 @@ public class NoteManager : MonoBehaviour
 
     public void NoteActive()
     {
-        //Debug.Log(AttackListOfEnemy.Count);
-        for (int i = 0; i < AttackListOfEnemy.Count; i++)
+        //Debug.Log(List2StructOfFightOfCastEnemy.Count);
+        for (int i = 0; i < List2StructOfFightOfCastEnemy.Count; i++)
         {
             objectOfNote[i].SetActive(true);
         }
@@ -258,7 +261,7 @@ public class NoteManager : MonoBehaviour
                 // 성공했으니 노트를 비활성화 합니다
                 objectOfNote[i].SetActive(false);
                 // 데미지를 계산하여 입힙니다
-                damageManager.CalculationOfDamage(AttackListOfEnemy[i]);
+                damageManager.CalculationOfDamage(List2StructOfFightOfCastEnemy[i]);
                 missCheck = true;
             }
             // 정확히 성공하지 못했다면 평범하게라도 성공했는지 뭍습니다
@@ -271,7 +274,7 @@ public class NoteManager : MonoBehaviour
                 missCheck = true;
 
                 // 데미지를 계산하여 입힙니다
-                damageManager.CalculationOfDamage(AttackListOfEnemy[i]);
+                damageManager.CalculationOfDamage(List2StructOfFightOfCastEnemy[i]);
 
             }
 

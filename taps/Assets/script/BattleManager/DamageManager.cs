@@ -24,7 +24,7 @@ public class DamageManager : MonoBehaviour
             //Debug.Log(structOfFight[i].attacker.gameObject.name);
 
             structOfFight[i].attacker.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
-            structOfFight[i].defender.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
+            structOfFight[i].defender.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Hit");
         }
 
         audioSource.PlayOneShot(audioClips[Random.Range(3, 5)]);

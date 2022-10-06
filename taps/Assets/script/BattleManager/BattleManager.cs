@@ -27,6 +27,7 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(Shake((int)UiManager.Phase.Standby));
+        UpdateOfUiPhaseAndSkill();
     }
 
     private void Update()
@@ -57,6 +58,7 @@ public class BattleManager : MonoBehaviour
 
         UiManager.vs = new();
 
+
         for (int i = 0; i < UiManager.PartyOfPlayer.Count; i++)
         {
             UiManager.vs.Add(true);
@@ -66,11 +68,11 @@ public class BattleManager : MonoBehaviour
                 .GetChild(i)
                 .gameObject;
 
-            UiManager.exampleOfPlayerList[i] = UiManager
-                .teamOfPlayer
-                .transform
-                .GetChild(i)
-                .gameObject;
+            //UiManager.exampleOfPlayerList[i] = UiManager
+                //.teamOfPlayer
+                //.transform
+                //.GetChild(i)
+                //.gameObject;
 
             UiManager.PartyOfEnemy[i] = UiManager
                 .teamOfEnemy
@@ -102,6 +104,57 @@ public class BattleManager : MonoBehaviour
                     .GetComponent<Button>());
             }
 
+        }
+
+
+        // 초기화를 해주는 부분
+        UiManager.listListSpriteRendererOfNoteP = new();
+        UiManager.listListSpriteRendererOfNoteE = new();
+
+        // 파티원 수만큼 포문을 반복
+        for (int i = 0; i < UiManager.noteUis.transform.GetChild(0).childCount; i++)
+        {
+            // 첫 겟차일드는 플레이어와 적꺼를 구분용
+            // 두번째 차일드는 파티에서도 1234중 1개 구분용
+            // 세버내 차일드는 대상의 공격중에서 노트의 갯수용
+            //UiManager.noteUis.transform.GetChild(0).GetChild(i);
+
+            UiManager.listListSpriteRendererOfNoteP.Add(null);
+            UiManager.listListSpriteRendererOfNoteP[i] = new();
+
+            // 노트의 수만큼 포문을 반복
+            for (int ii = 0; ii < UiManager.noteUis.transform.GetChild(0).GetChild(i).childCount; ii++)
+            {
+                UiManager.listListSpriteRendererOfNoteP[i].Add(
+                    UiManager
+                    .noteUis
+                    .transform
+                    .GetChild(0).GetChild(i).GetChild(ii)
+                    .GetComponent<Image>());
+            }
+        }
+
+        // 파티원 수만큼 포문을 반복
+        for (int i = 0; i < UiManager.noteUis.transform.GetChild(1).childCount; i++)
+        {
+            // 첫 겟차일드는 플레이어와 적꺼를 구분용
+            // 두번째 차일드는 파티에서도 1234중 1개 구분용
+            // 세버내 차일드는 대상의 공격중에서 노트의 갯수용
+            //UiManager.noteUis.transform.GetChild(0).GetChild(i);
+
+            UiManager.listListSpriteRendererOfNoteE.Add(null);
+            UiManager.listListSpriteRendererOfNoteE[i] = new();
+
+            // 노트의 수만큼 포문을 반복
+            for (int ii = 0; ii < UiManager.noteUis.transform.GetChild(1).GetChild(i).childCount; ii++)
+            {
+                UiManager.listListSpriteRendererOfNoteE[i].Add(
+                    UiManager
+                    .noteUis
+                    .transform
+                    .GetChild(1).GetChild(i).GetChild(ii)
+                    .GetComponent<Image>());
+            }
         }
 
     }
@@ -145,55 +198,6 @@ public class BattleManager : MonoBehaviour
         EnemyStart();
 
         // 아군들의 기본 공격도 저장합니다
-        for (int i = 0; i < UiManager.PartyOfEnemy.Count; i++)
-        {
-            // 먼저 파티에 있는 스크립트를 가져오고
-            ParentsOfParty ofParty = UiManager.PartyOfPlayer[i].GetComponent<ParentsOfParty>();
-
-            // 해당 대상이 죽어 있다면 넘어가고
-            if (ofParty.Dead == true)
-            {
-                continue;
-            }
-
-            // ofParty 스크립트가 가진 데미지 구조체 리스트를 가져오고
-            List<StructOfDamage> ofDamages = ofParty.StructOfDamages;
-
-
-            // 이 부분이 공격을 지정합니다 가중치 등의 이유로 수정을 원한다면 여기를 바꿔야 합니다
-
-            // ofDamages 구조체리스트 중에서 랜덤으로 1개 구조체를 골라 인트로 저장합니다
-            int randomattack = Random.Range(0, ofDamages.Count);
-
-
-            // ofDamages 구조체 리스트에 존재하는 randomattack번째 구조체가 numberOfNote를 가져옵니다
-            int notees = ofDamages[randomattack].numberOfNote;
-
-            // notees 숫자만큼 노트를 생성하기위해 반복문을 돌리고 
-            for (int ii = 0; ii < notees; ii++)
-            {
-                // StructOfFight 구조체를 만들어서 노트 리스트의 위치에 맞는 공격자와 방어자, randomattack번쨰의 데미지 구조체를 넣어줍니다
-                StructOfFight ofFight = new(ofParty, UiManager.PartyOfEnemy[i].GetComponent<ParentsOfParty>(), ofDamages[randomattack]);
-
-
-                // 이부분이 노트 1개에 구조체 1개를 넣는 부분입니다
-                // 노트1개에 다른 구조체를 넣고 싶다면 수정해 줍니다
-
-                // ofFight를 리스트화 해서 넣어줍니다
-                List<StructOfFight> ofFights = new()
-                {
-                    ofFight
-                };
-
-                // 그리고 해당 ofFight구조체를 넣어줍니다 
-                NoteManager.AttackListOfPlayer.Add(ofFights);
-                //Debug.Log(NoteManager.AttackListOfEnemy.Count);
-                // 구조체를 넣어줬으니 넣어준 만큼 노트를 활성화 시킵니다
-
-            }
-
-
-        }
 
         //Debug.Log(223232323);
 
@@ -280,8 +284,8 @@ public class BattleManager : MonoBehaviour
                 };
 
                 // 그리고 해당 ofFight구조체를 넣어줍니다 
-                NoteManager.AttackListOfEnemy.Add(ofFights);
-                //Debug.Log(NoteManager.AttackListOfEnemy.Count);
+                NoteManager.List2StructOfFightOfCastEnemy.Add(ofFights);
+                //Debug.Log(NoteManager.List2StructOfFightOfCastEnemy.Count);
                 // 구조체를 넣어줬으니 넣어준 만큼 노트를 활성화 시킵니다
 
             }
@@ -301,9 +305,9 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void UpdateOfUiPhaseAndSkill()
     {
+        #region 데이터 조작
         // 페이즈 보기용 ui
-        UiManager.arrowOfPhase.transform.localPosition = UiManager.vector3OfPhase[UiManager.intOfPhase];
-
+        #region 캐릭터, 노트Ui, 스킬Ui위치 조정
 
         List<bool> vs = new();
         vs.Add(true);
@@ -311,14 +315,14 @@ public class BattleManager : MonoBehaviour
         vs.Add(true);
         vs.Add(true);
 
+        // 코드 간략화를 위해 스택을 짧게 정의합니다
+        List<StruckOfAct> struckOfActs = new(UiManager.stackOfActs);
+
+        // 예시용으로 보여줄 리스트를 만듭니다
+        List<GameObject> examples = new(UiManager.PartyOfPlayer);
+
         if (UiManager.intOfUi != (int)UiManager.EnumOfUi.Note)
         {
-            // 코드 간략화를 위해 스택을 짧게 정의합니다
-            List<StruckOfAct> struckOfActs = new(UiManager.stackOfActs);
-            // 역시 예제 플레이어리스트를 짧게 정리합니다
-            List<GameObject> examples = new(UiManager.PartyOfPlayer);
-
-
 
             // 쌓인 구조체에 따라서 예시를 바꿉니다
             for (int i = 0; i < struckOfActs.Count; i++)
@@ -343,29 +347,18 @@ public class BattleManager : MonoBehaviour
                 vs[A] = vs[B];
                 vs[B] = tmp2;
 
-                
-            }
 
-
-            // 이동중인 예시를 보입니다
-
-            // 위치를 리스트 순서에 맞게 둡니다
-            for (int i = 0; i < UiManager.PartyOfPlayer.Count; i++)
-            {
-                examples[i].transform.localPosition = UiManager.listOfPlayerTransform[i];
-            }
-            UiManager.exampleOfPlayerList = new(examples);
-        }
-        else
-        {
-            // 실제 오브젝트의 위치를 보입니다
-            // 위치를 리스트 순서에 맞게 둡니다
-            for (int i = 0; i < UiManager.PartyOfPlayer.Count; i++)
-            {
-                UiManager.PartyOfPlayer[i].transform.localPosition = UiManager.listOfPlayerTransform[i];
             }
         }
+        #endregion
 
+        #region enum을 기반으로한 int값으로 스킬선택지 활성화 관리용
+        // 기본적 스킬 버튼들입니다
+        bool nomallistListGameObjectOfSkills = false;
+        // 이동을 결정하는 스킬 버튼입니다
+        bool movelistListGameObjectOfSkills = false;
+        // 대상을 지정하는 스킬 버튼입니다
+        bool targetlistListGameObjectOfSkills = false;
         // 스킬들 Ui
 
         // 3가지 종류로 나뉩니다
@@ -383,51 +376,16 @@ public class BattleManager : MonoBehaviour
             // 기본
             case (int)UiManager.EnumOfUi.AllSkill:
 
-                // Ui중에서도 스킬들을 관리합니다
-                for (int i = 0; i < UiManager.listListGameObjectOfSkills.Count; i++)
-                {
-                    // 마지막 선택지는 다르게 적용되야 하므로 -1을 해줍니다
-                    for (int ii = 0; ii < UiManager.listListGameObjectOfSkills[i].Count - 1; ii++)
-                    {
-                        UiManager.listListGameObjectOfSkills[i][ii].SetActive(true);
-                        // 일반적 선택지는 행동 가능유무에 따라서 버튼을 활성화 합니다
-                        UiManager.listListButtonOfSkills[i][ii].interactable = vs[i];
-                            //UiManager.exampleOfPlayerList[i].GetComponent<Player>().BoolOfPlayAble;
-                    }
-
-                    // 이동 선택용 선택지는 비활성화
-                    UiManager.listListGameObjectOfSkills[i][^2].SetActive(false);
-                    // 대상 지정용 선택지도 비활성화
-                    UiManager.listListGameObjectOfSkills[i][^1].SetActive(false);
-                }
-
-
+                nomallistListGameObjectOfSkills = true;
+                movelistListGameObjectOfSkills = false;
+                targetlistListGameObjectOfSkills = false;
                 break;
+
             case (int)UiManager.EnumOfUi.MoveSkill:
 
-                // Ui중에서도 스킬들을 관리합니다
-                for (int i = 0; i < UiManager.listListGameObjectOfSkills.Count; i++)
-                {
-                    // 마지막 선택지는 다르게 적용되야 하므로 -1을 해줍니다
-                    for (int ii = 0; ii < UiManager.listListGameObjectOfSkills[i].Count - 1; ii++)
-                    {
-                        // 일반적 선택지는 활성화
-                        UiManager.listListGameObjectOfSkills[i][ii].SetActive(false);
-                    }
-
-                    // 이미 고른 번호의 교체는 비활성화상태로 둡니다
-                    if (i == UiManager.intOfChange)
-                    {
-                        continue;
-                    }
-
-                    // 이동 선택용 선택지는 비활성화
-                    UiManager.listListGameObjectOfSkills[i][^2].SetActive(true);
-                    // 대상 지정용 선택지도 비활성화
-                    UiManager.listListGameObjectOfSkills[i][^1].SetActive(false);
-                }
-
-
+                nomallistListGameObjectOfSkills = false;
+                movelistListGameObjectOfSkills = true;
+                targetlistListGameObjectOfSkills = false;
                 break;
 
             case (int)UiManager.EnumOfUi.TargetSkill:
@@ -439,10 +397,87 @@ public class BattleManager : MonoBehaviour
                 break;
 
         }
+        #endregion
+
+        #endregion
+        UiManager.arrowOfPhase.transform.localPosition = UiManager.vector3OfPhase[UiManager.intOfPhase];
 
 
+        #region Ui조작
 
-        
+        #region 플레이어의 위치 조정
+
+        if (UiManager.intOfUi != (int)UiManager.EnumOfUi.Note)
+        {
+
+            // 이동중인 예시를 보입니다
+
+            // 위치를 리스트 순서에 맞게 둡니다
+            for (int i = 0; i < UiManager.PartyOfPlayer.Count; i++)
+            {
+                examples[i].transform.localPosition = UiManager.listOfPlayerTransform[i];
+            }
+            //UiManager.exampleOfPlayerList = new(examples);
+        }
+        else
+        {
+            // 실제 오브젝트의 위치를 보입니다
+            // 위치를 리스트 순서에 맞게 둡니다
+            for (int i = 0; i < UiManager.PartyOfPlayer.Count; i++)
+            {
+                UiManager.PartyOfPlayer[i].transform.localPosition = UiManager.listOfPlayerTransform[i];
+            }
+        }
+        #endregion
+
+        #region 스킬선택지 위치 조정
+
+        // Ui중에서도 스킬들을 관리합니다
+        for (int i = 0; i < UiManager.listListGameObjectOfSkills.Count; i++)
+        {
+            // 뒤의 두 버튼은 이동과 대상지정을 위하므로 빼줍니다다
+            for (int ii = 0; ii < 4; ii++)
+            {
+                // 일반적인 스킬들에 적용합니다
+                UiManager.listListGameObjectOfSkills[i][ii].SetActive(nomallistListGameObjectOfSkills);
+                // 일반적 선택지는 행동 가능유무에 따라서 버튼을 활성화 합니다
+                UiManager.listListButtonOfSkills[i][ii].interactable = vs[i];
+
+                //UiManager.exampleOfPlayerList[i].GetComponent<Player>().BoolOfPlayAble;
+            }
+
+            // 이동 선택용 선택지
+            if(i != UiManager.intOfChange)
+            {
+                UiManager.listListGameObjectOfSkills[i][4].SetActive(movelistListGameObjectOfSkills);
+            }
+
+
+            // 대상 지정용 선택지
+            UiManager.listListGameObjectOfSkills[i][5].SetActive(targetlistListGameObjectOfSkills);
+        }
+        #endregion
+
+        #region 노트를 알려주는Ui조정
+
+        // 공격을 알려주는 노트Ui를 수정합니다
+        for (int i =0; i < UiManager.listListSpriteRendererOfNoteP.Count; i++)
+        {
+            //Debug.Log(UiManager.listListSpriteRendererOfNoteP[i].Count + " " + UiManager.listIntOfNoteEachP[i]);
+
+            for (int ii = 0; ii < UiManager.listIntOfNoteEachP[i]; ii++)
+            {
+                UiManager.listListSpriteRendererOfNoteP[i][ii].color = UiManager.colorOfNoteUi[1];
+            }
+
+            for (int ii = UiManager.listIntOfNoteEachP[i]; ii < UiManager.listListSpriteRendererOfNoteP[i].Count; ii++)
+            {
+                UiManager.listListSpriteRendererOfNoteP[i][ii].color = UiManager.colorOfNoteUi[0];
+            }
+        }
+        #endregion
+
+        #endregion
 
     }
 
@@ -455,6 +490,7 @@ public class BattleManager : MonoBehaviour
     /// <param name="input"></param>
     public void ChangeButton1(int input)
     {
+
         // 자리 바꿀 준비를 한다고 알려줍니다
         UiManager.intOfUi = (int)UiManager.EnumOfUi.MoveSkill;
         // 자리를 바꾸는 사람을 알려줍니다
@@ -482,9 +518,32 @@ public class BattleManager : MonoBehaviour
         //Debug.Log(UiManager.stackOfActs.Count);
     }
 
-    public void Skill()
+    public void Skill1(int input)
     {
+        // 대상 지정을 합니다
+        UiManager.intOfUi = (int)UiManager.EnumOfUi.TargetSkill;
+        // 공격자를 정합니다
+        UiManager.intOfAttaker = input;
 
+        UpdateOfUiPhaseAndSkill();
+    }
+
+    public void Skill2(int input)
+    {
+        // 대상 지정을 합니다
+        UiManager.intOfUi = (int)UiManager.EnumOfUi.AllSkill;
+        
+
+
+
+        // 새로운 구조체를 만듭니다
+        StruckOfAct struckOfAct = new(UiManager.intOfAttaker, input, (int)StruckOfAct.typeOfAct.attack);
+
+
+        // 그 구조체를 넣어줘서 스택을 추가시킵니다
+        UiManager.stackOfActs.Add(struckOfAct);
+
+        UpdateOfUiPhaseAndSkill();
     }
 
     #endregion
