@@ -29,3 +29,17 @@ public class ParentsOfParty : MonoBehaviour
         characterUi.UpdateOfCharacterUi(Hp, Stamina);
     }
 }
+
+public struct DataOfParty
+{
+
+    public int MaxHp { get; set; }
+
+    public int Hp { get; set; }
+
+    public int MaxStamina { get; set; }
+
+    public int Stamina { get; set; }
+
+    public bool Dead { get; set; }
+}
