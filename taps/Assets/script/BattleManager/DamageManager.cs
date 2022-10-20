@@ -12,10 +12,10 @@ public class DamageManager : MonoBehaviour
     public List<AudioClip> audioClips;
 
 
-    public void CalculationOfDamage(List<StructOfFight> structOfFight) 
+    public void CalculationOfDamage(List<StructOfFight> structOfFight)
     {
 
-        for (int  i =0; i < structOfFight.Count; i++)
+        for (int i = 0; i < structOfFight.Count; i++)
         {
             //Debug.Log(structOfFight[i].structOfDamage.damage);
             structOfFight[i].attacker.Hp += structOfFight[i].structOfDamage.damage;
@@ -42,6 +42,8 @@ public class DamageManager : MonoBehaviour
         }
 
     }
+
+
 
     public void SwordClip(int input)
     {

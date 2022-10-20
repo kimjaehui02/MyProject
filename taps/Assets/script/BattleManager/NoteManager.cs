@@ -102,6 +102,8 @@ public class NoteManager : MonoBehaviour
         List2StructOfFightOfCastEnemy = new List<List<StructOfFight>>();
         List2StructOfFightOfCastPlayer = new List<List<StructOfFight>>();
         //testStart();
+
+
     }
 
 
@@ -232,8 +234,11 @@ public class NoteManager : MonoBehaviour
     /// <summary>
     /// 버튼을 눌렀을때 실행하여 노트의 위치를 체크합니다
     /// </summary>
-    public void Check()
+    public int Check()
     {
+        // 성공을 리턴합니다
+        int able = 0;
+
         // 헛타를 쳤는지를 검사합니다
         bool missCheck = false;
         // 체크지점을 비교하기위해서 백분율과 곱해줍니다 지속시간의 75퍼센트 지점을 나타냅니다
@@ -261,7 +266,8 @@ public class NoteManager : MonoBehaviour
                 // 성공했으니 노트를 비활성화 합니다
                 objectOfNote[i].SetActive(false);
                 // 데미지를 계산하여 입힙니다
-                damageManager.CalculationOfDamage(List2StructOfFightOfCastEnemy[i]);
+                //damageManager.CalculationOfDamage(List2StructOfFightOfCastEnemy[i]);
+                able = 2;
                 missCheck = true;
             }
             // 정확히 성공하지 못했다면 평범하게라도 성공했는지 뭍습니다
@@ -274,8 +280,8 @@ public class NoteManager : MonoBehaviour
                 missCheck = true;
 
                 // 데미지를 계산하여 입힙니다
-                damageManager.CalculationOfDamage(List2StructOfFightOfCastEnemy[i]);
-
+                //damageManager.CalculationOfDamage(List2StructOfFightOfCastEnemy[i]);
+                able = 1;
             }
 
         }
@@ -285,6 +291,7 @@ public class NoteManager : MonoBehaviour
             damageManager.MissClip();
         }
 
+        return able;
 
     }
     #endregion

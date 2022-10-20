@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.UI;
+
 public class TownManager : MonoBehaviour
 {
     [SerializeField]
@@ -21,6 +23,13 @@ public class TownManager : MonoBehaviour
     float height;
     float width;
 
+    public float moveSpeed1;
+    public float moveSpeed2;
+
+    public GameObject GameObject1;
+    public GameObject GameObject2;
+
+    public string[] GetVs;
     void Start()
     {
         //playerTransform = GameObject.Find("Player").GetComponent<Transform>();
@@ -56,13 +65,7 @@ public class TownManager : MonoBehaviour
     }
 
 
-    public float moveSpeed1;
-    public float moveSpeed2;
 
-    public GameObject GameObject1;
-    public GameObject GameObject2;
-
-    public string[] GetVs;
     
 
     public void BackGroundManage()
@@ -82,5 +85,12 @@ public class TownManager : MonoBehaviour
         {
             GameManager.instance.MoveScene(GetVs[0]);
         }
+    }
+
+    public GameObject Game;
+
+    private void Update()
+    {
+        Game.GetComponent<RectTransform>().position = Input.mousePosition;
     }
 }

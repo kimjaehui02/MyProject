@@ -28,12 +28,18 @@ public class BattleManager : MonoBehaviour
     {
         StartCoroutine(Shake((int)UiManager.Phase.Standby));
         UpdateOfUiPhaseAndSkill();
+
+        Part2(true);
     }
+
+    int tset = 0;
 
     private void Update()
     {
         NoteManager.NoteManagerUpdate();
         Check();
+
+        Part2();
 
 
         //UpdateOfUiPhaseAndSkill();
@@ -407,6 +413,16 @@ public class BattleManager : MonoBehaviour
 
         #region 플레이어의 위치 조정
 
+
+        // 실제 오브젝트의 위치를 보입니다
+        // 위치를 리스트 순서에 맞게 둡니다
+        for (int i = 0; i < UiManager.PartyOfPlayer.Count; i++)
+        {
+
+            UiManager.PartyOfEnemy[i].transform.localPosition = -UiManager.listOfPlayerTransform[i];
+        }
+
+
         if (UiManager.intOfUi != (int)UiManager.EnumOfUi.Note)
         {
 
@@ -425,8 +441,10 @@ public class BattleManager : MonoBehaviour
             // 위치를 리스트 순서에 맞게 둡니다
             for (int i = 0; i < UiManager.PartyOfPlayer.Count; i++)
             {
+
                 UiManager.PartyOfPlayer[i].transform.localPosition = UiManager.listOfPlayerTransform[i];
             }
+
         }
         #endregion
 
@@ -481,6 +499,33 @@ public class BattleManager : MonoBehaviour
 
     }
 
+    public void Part2(bool start = false)
+    {
+        if (Input.GetKeyDown(KeyCode.Tab) || start == true)
+        {
+            UpdateOfUiPhaseAndSkill();
+            tset++;
+            tset %= 4;
+
+            for (int i = 0; i < 4; i++)
+            {
+                UiManager.PartyOfPlayer[i].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = -1;
+                UiManager.PartyOfPlayer[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = -1;
+
+                UiManager.PartyOfEnemy[i].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = -1;
+                UiManager.PartyOfEnemy[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = -1;
+            }
+
+
+            UiManager.PartyOfPlayer[tset].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 3;
+            UiManager.PartyOfPlayer[tset].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 3;
+
+            UiManager.PartyOfEnemy[tset].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 3;
+            UiManager.PartyOfEnemy[tset].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 3;
+        }
+        UiManager.PartyOfPlayer[tset].transform.position = UiManager.target12[0].transform.position;
+        UiManager.PartyOfEnemy[tset].transform.position = UiManager.target12[1].transform.position;
+    }
 
     #region 구조체 생성파트
 
@@ -552,10 +597,37 @@ public class BattleManager : MonoBehaviour
 
     public void Check()
     {
+        int input = 0;
         if (Input.GetKeyDown(KeyCode.E))
         {
-            NoteManager.Check();
+            input = NoteManager.Check();
 
+        }
+
+        if (input == 2)
+        {
+            UiManager.PartyOfPlayer[tset].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
+            UiManager.PartyOfEnemy[tset].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Hit");
+
+            StartCoroutine(Shaked2(UiManager.PartyOfPlayer[tset].transform.GetChild(1).GetComponent<SpriteRenderer>()));
+            StartCoroutine(Shaked(UiManager.PartyOfEnemy[tset].transform.GetChild(1).GetComponent<SpriteRenderer>()));
+
+            UiManager.target12[0].GetComponent<Rigidbody2D>().AddForce(new Vector3(-100, 0, 0));
+            UiManager.target12[1].GetComponent<Rigidbody2D>().AddForce(new Vector3(300, 0, 0));
+            DamageManager.SwordClip(0);
+        }
+
+        if (input == 1)
+        {
+            UiManager.PartyOfPlayer[tset].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
+            UiManager.PartyOfEnemy[tset].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
+
+            StartCoroutine(Shaked2(UiManager.PartyOfPlayer[tset].transform.GetChild(1).GetComponent<SpriteRenderer>()));
+            StartCoroutine(Shaked2(UiManager.PartyOfEnemy[tset].transform.GetChild(1).GetComponent<SpriteRenderer>()));
+
+            UiManager.target12[0].GetComponent<Rigidbody2D>().AddForce(new Vector3(-100, 0, 0));
+            UiManager.target12[1].GetComponent<Rigidbody2D>().AddForce(new Vector3(100, 0, 0));
+            DamageManager.SwordClip(1);
         }
     }
 
@@ -598,6 +670,8 @@ public class BattleManager : MonoBehaviour
     IEnumerator Shake(int input)
     {
         yield return new WaitForSecondsRealtime(0.5f);
+
+        //yield break;
 
         switch (input)
         {
@@ -669,6 +743,70 @@ public class BattleManager : MonoBehaviour
 
         // 재실행합니다
         StartCoroutine(Flicker(color, input, dark));
+
+    }
+
+    IEnumerator Shaked(SpriteRenderer sprite, int shakeint = 0)
+    {
+
+        shakeint++;
+        if (shakeint % 2 == 1)
+        {
+            sprite.gameObject.transform.localPosition = new Vector2(0.2f, 0);
+        }
+        else
+        {
+            sprite.gameObject.transform.localPosition = new Vector2(-0.2f, 0);
+        }
+
+        sprite.GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 100 / 255f, 100 / 255f);
+
+
+
+        if (shakeint != 5)
+        {
+            yield return new WaitForSecondsRealtime(0.02f);
+            StartCoroutine(Shaked(sprite, shakeint));
+        }
+        else
+        {
+            sprite.gameObject.transform.localPosition = new Vector2(0, 0);
+            sprite.GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 255 / 255f, 255 / 255f);
+            //shakeint = 0;
+
+        }
+
+    }
+
+    IEnumerator Shaked2(SpriteRenderer sprite, int shakeint = 0)
+    {
+
+        shakeint++;
+        if (shakeint % 2 == 1)
+        {
+            sprite.gameObject.transform.localPosition = new Vector2(0.2f, 0);
+        }
+        else
+        {
+            sprite.gameObject.transform.localPosition = new Vector2(-0.2f, 0);
+        }
+
+        sprite.GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 255 / 255f, 100 / 255f);
+
+
+
+        if (shakeint != 5)
+        {
+            yield return new WaitForSecondsRealtime(0.02f);
+            StartCoroutine(Shaked2(sprite, shakeint));
+        }
+        else
+        {
+            sprite.gameObject.transform.localPosition = new Vector2(0, 0);
+            sprite.GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 255 / 255f, 255 / 255f);
+            //shakeint = 0;
+
+        }
 
     }
 

@@ -177,6 +177,10 @@ public class UiManager : MonoBehaviour
     /// </summary>
     public List<GameObject> PartyOfEnemy { get; set; }
 
+    public GameObject focusing;
+
+    public List<GameObject> target12; 
+
     #endregion
 
 
