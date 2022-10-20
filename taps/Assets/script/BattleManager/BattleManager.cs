@@ -510,17 +510,17 @@ public class BattleManager : MonoBehaviour
             for (int i = 0; i < 4; i++)
             {
                 UiManager.PartyOfPlayer[i].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = -1;
-                UiManager.PartyOfPlayer[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = -1;
+                UiManager.PartyOfPlayer[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = -2;
 
                 UiManager.PartyOfEnemy[i].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = -1;
-                UiManager.PartyOfEnemy[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = -1;
+                UiManager.PartyOfEnemy[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = -2;
             }
 
 
-            UiManager.PartyOfPlayer[tset].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 3;
+            UiManager.PartyOfPlayer[tset].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 4;
             UiManager.PartyOfPlayer[tset].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 3;
 
-            UiManager.PartyOfEnemy[tset].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 3;
+            UiManager.PartyOfEnemy[tset].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 4;
             UiManager.PartyOfEnemy[tset].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 3;
         }
         UiManager.PartyOfPlayer[tset].transform.position = UiManager.target12[0].transform.position;
