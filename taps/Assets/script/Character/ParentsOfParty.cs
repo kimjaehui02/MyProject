@@ -21,6 +21,8 @@ public class ParentsOfParty : MonoBehaviour
     [field: SerializeField]
     public bool Dead { get; set; }
 
+
+
     public List<StructOfDamage> StructOfDamages { get; set; }
 
     public void ParentsUpdate()

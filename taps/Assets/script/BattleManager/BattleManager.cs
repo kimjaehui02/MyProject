@@ -26,19 +26,19 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Shake((int)UiManager.Phase.Standby));
         UpdateOfUiPhaseAndSkill();
 
         Part2(true);
+        BattleStart();
     }
 
-    int tset = 0;
 
     private void Update()
     {
         NoteManager.NoteManagerUpdate();
         Check();
 
+        ChagePhaseWorking();
         Part2();
 
 
@@ -75,10 +75,10 @@ public class BattleManager : MonoBehaviour
                 .gameObject;
 
             //UiManager.exampleOfPlayerList[i] = UiManager
-                //.teamOfPlayer
-                //.transform
-                //.GetChild(i)
-                //.gameObject;
+            //.teamOfPlayer
+            //.transform
+            //.GetChild(i)
+            //.gameObject;
 
             UiManager.PartyOfEnemy[i] = UiManager
                 .teamOfEnemy
@@ -165,11 +165,17 @@ public class BattleManager : MonoBehaviour
 
     }
 
+    public GameObject Skills;
+
+    public GameObject Lines;
+
     /// <summary>
     /// 개전
     /// </summary>
     public void BattleStart()
     {
+        ChageText();
+        StartCoroutine(Shake((int)UiManager.Phase.Standby));
 
     }
 
@@ -180,16 +186,17 @@ public class BattleManager : MonoBehaviour
     public void StandbyPhase()
     {
         // 모든 플레이어를 행동가능한 상태로 합니다
-        foreach(var i in UiManager.PartyOfPlayer)
+        foreach (var i in UiManager.PartyOfPlayer)
         {
             //i.GetComponent<Player>().BoolOfPlayAble = true;
         }
 
 
-        
 
 
+        ChageText("전투직전");
         StartCoroutine(Shake((int)UiManager.Phase.Main));
+
     }
 
     /// <summary>
@@ -207,7 +214,10 @@ public class BattleManager : MonoBehaviour
 
         //Debug.Log(223232323);
 
+        ChageText("전투준비");
         StartCoroutine(Shake((int)UiManager.Phase.BattleForEnemy));
+
+
     }
 
     /// <summary>
@@ -216,29 +226,29 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void BattlePhase1()
     {
-        
 
 
-        NoteManager.NoteActive();
 
+        //NoteManager.NoteActive();
+        ChageText("전투");
         StartCoroutine(Shake((int)UiManager.Phase.End));
     }
 
     public void BattlePhase2()
     {
-        
+
 
 
         NoteManager.NoteActive();
 
 
 
-        StartCoroutine(Shake((int)UiManager.Phase.End));
+        //StartCoroutine(Shake((int)UiManager.Phase.End));
     }
 
     public void EndPhase()
     {
-        
+
         //StartCoroutine(Shake((int)Phase.Standby));
     }
 
@@ -337,6 +347,7 @@ public class BattleManager : MonoBehaviour
                 vs[struckOfActs[i].attacker] = false;
 
                 // 이동행동이라면 반영시킵니다
+                // 이동행동이 아니라면 여기서 해줄게 없으니 다음으로 넘깁니다
                 if (struckOfActs[i].type != (int)StruckOfAct.typeOfAct.move)
                 {
                     continue;
@@ -406,6 +417,8 @@ public class BattleManager : MonoBehaviour
         #endregion
 
         #endregion
+
+
         UiManager.arrowOfPhase.transform.localPosition = UiManager.vector3OfPhase[UiManager.intOfPhase];
 
 
@@ -465,7 +478,7 @@ public class BattleManager : MonoBehaviour
             }
 
             // 이동 선택용 선택지
-            if(i != UiManager.intOfChange)
+            if (i != UiManager.intOfChange)
             {
                 UiManager.listListGameObjectOfSkills[i][4].SetActive(movelistListGameObjectOfSkills);
             }
@@ -479,7 +492,7 @@ public class BattleManager : MonoBehaviour
         #region 노트를 알려주는Ui조정
 
         // 공격을 알려주는 노트Ui를 수정합니다
-        for (int i =0; i < UiManager.listListSpriteRendererOfNoteP.Count; i++)
+        for (int i = 0; i < UiManager.listListSpriteRendererOfNoteP.Count; i++)
         {
             //Debug.Log(UiManager.listListSpriteRendererOfNoteP[i].Count + " " + UiManager.listIntOfNoteEachP[i]);
 
@@ -499,32 +512,37 @@ public class BattleManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 일단 적과 아군을 교체하기위한 임시용 함수입니다
+    /// </summary>
+    /// <param name="start"></param>
     public void Part2(bool start = false)
     {
+
+
         if (Input.GetKeyDown(KeyCode.Tab) || start == true)
         {
             UpdateOfUiPhaseAndSkill();
-            tset++;
-            tset %= 4;
+            UiManager.intOfFocus++;
+            UiManager.intOfFocus %= 4;
 
             for (int i = 0; i < 4; i++)
             {
-                UiManager.PartyOfPlayer[i].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = -1;
-                UiManager.PartyOfPlayer[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = -2;
+                UiManager.PartyOfPlayer[i].GetComponent<CharacterUi>().BoolOfFocus = false;
 
-                UiManager.PartyOfEnemy[i].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = -1;
-                UiManager.PartyOfEnemy[i].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = -2;
+                UiManager.PartyOfEnemy[i].GetComponent<CharacterUi>().BoolOfFocus = false;
             }
 
-
-            UiManager.PartyOfPlayer[tset].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 4;
-            UiManager.PartyOfPlayer[tset].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 3;
-
-            UiManager.PartyOfEnemy[tset].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 4;
-            UiManager.PartyOfEnemy[tset].transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 3;
+            UiManager.PartyOfPlayer[UiManager.intOfFocus].GetComponent<CharacterUi>().BoolOfFocus = true;
+            UiManager.PartyOfEnemy[UiManager.intOfFocus].GetComponent<CharacterUi>().BoolOfFocus = true;
         }
-        UiManager.PartyOfPlayer[tset].transform.position = UiManager.target12[0].transform.position;
-        UiManager.PartyOfEnemy[tset].transform.position = UiManager.target12[1].transform.position;
+
+        if (UiManager.intOfPhase == (int)UiManager.Phase.BattleForEnemy)
+        {
+            UiManager.PartyOfPlayer[UiManager.intOfFocus].transform.position = UiManager.target12[0].transform.position;
+            UiManager.PartyOfEnemy[UiManager.intOfFocus].transform.position = UiManager.target12[1].transform.position;
+        }
+
     }
 
     #region 구조체 생성파트
@@ -577,7 +595,7 @@ public class BattleManager : MonoBehaviour
     {
         // 대상 지정을 합니다
         UiManager.intOfUi = (int)UiManager.EnumOfUi.AllSkill;
-        
+
 
 
 
@@ -592,6 +610,123 @@ public class BattleManager : MonoBehaviour
     }
 
     #endregion
+
+
+
+
+    /// <summary>
+    /// 페이즈 전환시 효과들을 담습니다
+    /// </summary>
+    public void ChagePhaseWorking()
+    {
+        // 시작이 되어야만 진행됨
+        if (UiManager.PhaseChagebool == false)
+        {
+            return;
+        }
+        UiManager.FadeOutOfUi.gameObject.SetActive(true);
+
+        // 화면전환이 시작되는 시간
+        float start = 3.0f;
+        // 아래 시간에 걸쳐서 화면이 어두워짐
+        float fadeintime = 3.5f;
+        // 화면이 어두워진 상태에서 아래 시간만큼 있음
+        float none = 5.5f;
+
+
+        // 가리개가 어두워지는 정도입니다
+        float UiDark = 155f;
+
+        // 페이즈를 알려주는 텍스트가 존재할 위치들입니다
+        float textstart = 550;
+        float textend = 240;
+
+        //float textcal = textstart - textend;
+
+        // 시간 측정을 위해서 델타타임을 더함
+        UiManager.PhaseChagefloat += Time.fixedDeltaTime;
+        //Debug.Log(UiManager.PhaseChagefloat);
+
+        // 시간이 되지 않았다면 진행하지 않음
+        if (UiManager.PhaseChagefloat < start)
+        {
+            return;
+        }
+
+        // 화면을 어둡게 만듬
+        if (start < UiManager.PhaseChagefloat && UiManager.PhaseChagefloat < start + fadeintime)
+        {
+            // 진행상태를 백분율로 정했습니다
+            float coloring = (UiManager.PhaseChagefloat - start) / fadeintime;
+
+            // 가리개의 밝기를 조절합니다
+            UiManager.FadeOutOfUi.color = new Color(0, 0, 0, (UiDark * coloring) / 255);
+
+            UiManager.FadeOutOfText.GetComponent<Image>().color = new Color(255, 255, 255, (255 * coloring) / 255);
+            UiManager.FadeOutOfText.transform.GetChild(0).GetComponent<Text>().color
+                = new Color(255, 255, 255, (255 * coloring) / 255);
+            // 텍스트의 위치를 조절합니다
+            //UiManager.FadeOutOfText.GetComponent<RectTransform>().localPosition 
+            //    = new Vector3(0, textstart - (textend * coloring), 0) ;
+        }
+
+        // 변수처리를 짧게 하기위해 더해줌
+        float newstart = start + fadeintime + none;
+
+        // 화면을 밝게 만듬
+        if (newstart < UiManager.PhaseChagefloat && UiManager.PhaseChagefloat < newstart + fadeintime)
+        {
+            //진행상태를 백분율로 정했습니다
+            float coloring = 1 - ((UiManager.PhaseChagefloat - newstart) / fadeintime);
+            UiManager.FadeOutOfUi.color = new Color(0, 0, 0, (UiDark * coloring) / 255);
+
+
+            UiManager.FadeOutOfText.GetComponent<Image>().color = new Color(255, 255, 255, (255 * coloring) / 255);
+            UiManager.FadeOutOfText.transform.GetChild(0).GetComponent<Text>().color
+                = new Color(255, 255, 255, (255 * coloring) / 255);
+            // 텍스트의 위치를 조절합니다1
+            //UiManager.FadeOutOfText.GetComponent<RectTransform>().localPosition
+            //    = new Vector3(0, textstart - (textend * coloring), 0);
+        }   //
+
+        // 시간이 끝나면 완전히 초기화를 해줌
+        if (newstart + fadeintime < UiManager.PhaseChagefloat)
+        {
+            UiManager.FadeOutOfUi.color = new Color(0, 0, 0, 0);
+            UiManager.PhaseChagefloat = 0;
+            UiManager.PhaseChagebool = false;
+
+            // 텍스트의 위치를 조절합니다
+            //UiManager.FadeOutOfText.GetComponent<RectTransform>().localPosition
+            //    = new Vector3(0, textstart, 0);
+            UiManager.FadeOutOfText.GetComponent<Image>().color = new Color(255, 255, 255, (0) / 255);
+            UiManager.FadeOutOfText.transform.GetChild(0).GetComponent<Text>().color = new Color(255, 255, 255, (0) / 255);
+
+            UiManager.FadeOutOfUi.gameObject.SetActive(false);
+
+            if (UiManager.intOfPhase ==(int)UiManager.Phase.Main)
+            {
+                SkillOn();
+            }
+
+            if (UiManager.intOfPhase == (int)UiManager.Phase.BattleForEnemy)
+            {
+                battleOn();
+            }
+
+            return;
+        }
+
+
+
+    }
+
+    public void ChageText(string inputs = "개전")
+    {
+        UiManager.FadeOutOfText.transform.GetChild(0).GetComponent<Text>().text = inputs;
+        UiManager.PhaseChagebool = true;
+    }
+
     #endregion
 
 
@@ -606,11 +741,11 @@ public class BattleManager : MonoBehaviour
 
         if (input == 2)
         {
-            UiManager.PartyOfPlayer[tset].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
-            UiManager.PartyOfEnemy[tset].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Hit");
+            UiManager.PartyOfPlayer[UiManager.intOfFocus].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
+            UiManager.PartyOfEnemy[UiManager.intOfFocus].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Hit");
 
-            StartCoroutine(Shaked2(UiManager.PartyOfPlayer[tset].transform.GetChild(1).GetComponent<SpriteRenderer>()));
-            StartCoroutine(Shaked(UiManager.PartyOfEnemy[tset].transform.GetChild(1).GetComponent<SpriteRenderer>()));
+            StartCoroutine(Shaked2(UiManager.PartyOfPlayer[UiManager.intOfFocus].transform.GetChild(1).GetComponent<SpriteRenderer>()));
+            StartCoroutine(Shaked(UiManager.PartyOfEnemy[UiManager.intOfFocus].transform.GetChild(1).GetComponent<SpriteRenderer>()));
 
             UiManager.target12[0].GetComponent<Rigidbody2D>().AddForce(new Vector3(-100, 0, 0));
             UiManager.target12[1].GetComponent<Rigidbody2D>().AddForce(new Vector3(300, 0, 0));
@@ -619,11 +754,11 @@ public class BattleManager : MonoBehaviour
 
         if (input == 1)
         {
-            UiManager.PartyOfPlayer[tset].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
-            UiManager.PartyOfEnemy[tset].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
+            UiManager.PartyOfPlayer[UiManager.intOfFocus].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
+            UiManager.PartyOfEnemy[UiManager.intOfFocus].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
 
-            StartCoroutine(Shaked2(UiManager.PartyOfPlayer[tset].transform.GetChild(1).GetComponent<SpriteRenderer>()));
-            StartCoroutine(Shaked2(UiManager.PartyOfEnemy[tset].transform.GetChild(1).GetComponent<SpriteRenderer>()));
+            StartCoroutine(Shaked2(UiManager.PartyOfPlayer[UiManager.intOfFocus].transform.GetChild(1).GetComponent<SpriteRenderer>()));
+            StartCoroutine(Shaked2(UiManager.PartyOfEnemy[UiManager.intOfFocus].transform.GetChild(1).GetComponent<SpriteRenderer>()));
 
             UiManager.target12[0].GetComponent<Rigidbody2D>().AddForce(new Vector3(-100, 0, 0));
             UiManager.target12[1].GetComponent<Rigidbody2D>().AddForce(new Vector3(100, 0, 0));
@@ -637,17 +772,17 @@ public class BattleManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(UiManager.intOfUi == (int)UiManager.EnumOfUi.MoveSkill)
+            if (UiManager.intOfUi == (int)UiManager.EnumOfUi.MoveSkill)
             {
                 UiManager.intOfUi = (int)UiManager.EnumOfUi.AllSkill;
             }
             else
             {
-                if(UiManager.stackOfActs.Count != 0)
+                if (UiManager.stackOfActs.Count != 0)
                 {
-                    UiManager.stackOfActs.RemoveAt(UiManager.stackOfActs.Count-1);
+                    UiManager.stackOfActs.RemoveAt(UiManager.stackOfActs.Count - 1);
                 }
-                
+
             }
             UpdateOfUiPhaseAndSkill();
         }
@@ -669,8 +804,34 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator Shake(int input)
     {
-        yield return new WaitForSecondsRealtime(0.5f);
 
+        //switch (input)
+        //{
+        //    default:
+        //    case (int)UiManager.Phase.Standby:
+        //        UiManager.intOfPhase = (int)UiManager.Phase.Main;
+        //        //MainPhase();
+        //        break;
+        //    case (int)UiManager.Phase.Main:
+        //        UiManager.intOfPhase = (int)UiManager.Phase.BattleForEnemy;
+        //        //BattlePhase1();
+        //        break;
+        //    case (int)UiManager.Phase.BattleForEnemy:
+        //        UiManager.intOfPhase = (int)UiManager.Phase.End;
+        //        //EndPhase();
+        //        break;
+        //    //case (int)UiManager.Phase.BattleForPlayer:
+        //    //    UiManager.intOfPhase = (int)UiManager.Phase.BattleForPlayer;
+        //    //    BattlePhase2();
+        //    //    break;
+        //    case (int)UiManager.Phase.End:
+        //        UiManager.intOfPhase = (int)UiManager.Phase.Standby;
+        //        //StandbyPhase();
+        //        break;
+        //}
+
+        yield return new WaitForSeconds(4.5f);
+        //Debug.Log(123);
         //yield break;
 
         switch (input)
@@ -688,15 +849,14 @@ public class BattleManager : MonoBehaviour
                 UiManager.intOfPhase = (int)UiManager.Phase.BattleForEnemy;
                 BattlePhase1();
                 break;
-            case (int)UiManager.Phase.BattleForPlayer:
-                UiManager.intOfPhase = (int)UiManager.Phase.BattleForPlayer;
-                BattlePhase2();
-                break;
+            //case (int)UiManager.Phase.BattleForPlayer:
+            //    UiManager.intOfPhase = (int)UiManager.Phase.BattleForPlayer;
+            //    BattlePhase2();
+            //    break;
             case (int)UiManager.Phase.End:
                 UiManager.intOfPhase = (int)UiManager.Phase.End;
                 EndPhase();
                 break;
-
         }
 
     }
@@ -706,20 +866,20 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
         //Debug.Log(123);
 
-        if(UiManager.intOfUi == (int)UiManager.EnumOfUi.MoveSkill)
+        if (UiManager.intOfUi == (int)UiManager.EnumOfUi.MoveSkill)
         {
             color.color = new Color(255 / 255f, 255 / 255f, 255 / 255f, 255 / 255f);
             yield break;
         }
 
-        if(dark == true)
+        if (dark == true)
         {
             // 투명하게 만듭니다
             input -= 12;
 
 
             // 너무 투명하다면 되돌립니다
-            if(input < 100)
+            if (input < 100)
             {
                 dark = !dark;
             }
@@ -811,6 +971,40 @@ public class BattleManager : MonoBehaviour
     }
 
     #endregion
+
+    private void SkillOn()
+    {
+        Debug.Log(33322);
+        Skills.SetActive(true);
+    }
+
+    public GameObject wrwwr2;
+
+    private void battleOn()
+    {
+
+        Skills.SetActive(false);
+        Lines.SetActive(true);
+        wrwwr2.SetActive(true);
+        StartCoroutine(waits());
+    }
+
+    IEnumerator waits()
+    {
+        Debug.Log(3312);
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        for (int i = 0; i < 4; i++)
+        {
+            Debug.Log(3311231232);
+
+            NoteManager.NoteActive();
+            yield return new WaitForSecondsRealtime(8.5f);
+            Part2(true);
+
+        }
+
+    }
 }
 
 

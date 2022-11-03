@@ -25,12 +25,12 @@ public class NewPlayerManager : MonoBehaviour
     private bool m_isWallSliding = false;
     private bool m_grounded = false;
     //private bool m_rolling = false;
-    private int m_facingDirection = 1;
+    //private int m_facingDirection = 1;
     private int m_currentAttack = 0;
     private float m_timeSinceAttack = 0.0f;
     private float m_delayToIdle = 0.0f;
-    private float m_rollDuration = 8.0f / 14.0f;
-    private float m_rollCurrentTime;
+    //private float m_rollDuration = 8.0f / 14.0f;
+    //private float m_rollCurrentTime;
 
 
     // Use this for initialization
@@ -119,13 +119,13 @@ public class NewPlayerManager : MonoBehaviour
         if (inputX > 0)
         {
             @object.GetComponent<SpriteRenderer>().flipX = false;
-            m_facingDirection = 1;
+            //m_facingDirection = 1;
         }
 
         else if (inputX < 0)
         {
             @object.GetComponent<SpriteRenderer>().flipX = true;
-            m_facingDirection = -1;
+            //m_facingDirection = -1;
         }
 
         // Move
@@ -158,24 +158,24 @@ public class NewPlayerManager : MonoBehaviour
 
 
         //Attack
-        if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.45f)
-        {
-            m_currentAttack++;
-
-            // Loop back to one after third attack
-            if (m_currentAttack > 2)
-                m_currentAttack = 1;
-
-            // Reset Attack combo if time since last attack is too large
-            if (m_timeSinceAttack > 1.0f)
-                m_currentAttack = 1;
-
-            // Call one of three attack animations "Attack1", "Attack2", "Attack3"
-            m_animator.SetTrigger("Attack" + m_currentAttack);
-
-            // Reset timer
-            m_timeSinceAttack = 0.0f;
-        }
+        //if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.45f)
+        //{
+        //    m_currentAttack++;
+        //
+        //    // Loop back to one after third attack
+        //    if (m_currentAttack > 2)
+        //        m_currentAttack = 1;
+        //
+        //    // Reset Attack combo if time since last attack is too large
+        //    if (m_timeSinceAttack > 1.0f)
+        //        m_currentAttack = 1;
+        //
+        //    // Call one of three attack animations "Attack1", "Attack2", "Attack3"
+        //    m_animator.SetTrigger("Attack" + m_currentAttack);
+        //
+        //    // Reset timer
+        //    m_timeSinceAttack = 0.0f;
+        //}
 
         // Block
         //else if (Input.GetMouseButtonDown(1) && !m_rolling)
@@ -200,7 +200,7 @@ public class NewPlayerManager : MonoBehaviour
 
 
         //Jump
-        else if (Input.GetKeyDown("space") && m_grounded)// && !m_rolling)
+        if (Input.GetKeyDown("space") && m_grounded)// && !m_rolling)
         {
             m_animator.SetTrigger("Jump");
             m_grounded = false;

@@ -30,6 +30,32 @@ public class TownManager : MonoBehaviour
     public GameObject GameObject2;
 
     public string[] GetVs;
+
+    /// <summary>
+    /// Ui에 새길 캐릭터 이미지들
+    /// </summary>
+    public List<Sprite> sprites;
+
+    /// <summary>
+    /// Ui에 새길 캐릭터 배경 이미지들
+    /// </summary>
+    public List<Sprite> spritesback;
+
+    /// <summary>
+    /// 선택한 번호
+    /// </summary>
+    public int intOfPick;
+
+    /// <summary>
+    /// 일한 유무
+    /// </summary>
+    public List<bool> boolOfPick;
+
+    /// <summary>
+    /// 파티들의 이미지
+    /// </summary>
+    public List<GameObject> partyImages;
+
     void Start()
     {
         //playerTransform = GameObject.Find("Player").GetComponent<Transform>();
@@ -87,10 +113,55 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    public GameObject Game;
+    //public GameObject Game;
 
     private void Update()
     {
-        Game.GetComponent<RectTransform>().position = Input.mousePosition;
+        //Game.GetComponent<RectTransform>().position = Input.mousePosition;
+        Spritechange();
+        PickParty();
     }
+
+    private void PickParty()
+    {
+
+
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (boolOfPick[0] == false && boolOfPick[1] == false && boolOfPick[2] == false && boolOfPick[3] == false)
+            {
+                intOfPick = 5;
+                return;
+            }
+
+            intOfPick++;
+            intOfPick %= partyImages.Count;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if(boolOfPick[intOfPick] == false)
+                {
+                    intOfPick++;
+                    intOfPick %= partyImages.Count;
+                }
+            }
+
+        }
+    }
+
+    private void Spritechange()
+    {
+        // 활동 가능한 캐릭터라면 활동이 가능한 배경을 아니면 불가능한 배경을 넣습니다
+        for (int i = 0; i < partyImages.Count; i++)
+        {
+            partyImages[i].GetComponent<Image>().sprite = boolOfPick[i] ? spritesback[1] : spritesback[0];
+
+            if(i == intOfPick)
+            {
+                partyImages[i].GetComponent<Image>().sprite = spritesback[2];
+            }
+        }
+
+    }
+
 }

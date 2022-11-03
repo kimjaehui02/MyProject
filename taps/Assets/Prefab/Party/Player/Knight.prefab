@@ -440,6 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: 1
+  BoolOfFocus: 0
   SpriteRenderersOfHp:
   - {fileID: 3722100161303109003}
   - {fileID: 3722100161600838602}
@@ -450,6 +451,8 @@ MonoBehaviour:
   - {fileID: 3722100161045623529}
   - {fileID: 3722100160140500734}
   - {fileID: 3722100161442563021}
+  SpriteRendererOfMainsprite: {fileID: 3722100160805476663}
+  SpriteRendererOfBackSprite: {fileID: 3722100161763450055}
   colorOfUi:
   - {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   - {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
@@ -1207,7 +1210,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -10
   m_Sprite: {fileID: 7482667652216324306, guid: 8db9c5c1396f8404eba9ec6ca811de59, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.87058824}
   m_FlipX: 0

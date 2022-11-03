@@ -5,10 +5,13 @@ using UnityEngine;
 public class CharacterUi : MonoBehaviour
 {
     public bool Player;
+    public bool BoolOfFocus;
 
     public SpriteRenderer[] SpriteRenderersOfHp;
     public SpriteRenderer[] SpriteRenderersOfSta;
 
+    public SpriteRenderer SpriteRendererOfMainsprite;
+    public SpriteRenderer SpriteRendererOfBackSprite;
 
     public List<Color> colorOfUi;
 
@@ -16,6 +19,7 @@ public class CharacterUi : MonoBehaviour
     {
         HpManage(Hp);
         StaminaManage(Sta);
+        LayerManager();
     }
 
     public void HpManage(int inputHp)
@@ -100,6 +104,46 @@ public class CharacterUi : MonoBehaviour
             SpriteRenderersOfSta[i].color = colorOfBig;
         }
 
+    }
+
+    public void LayerManager()
+    {
+        
+        if(BoolOfFocus == true)
+        {
+            // 체력바들 뒤로
+            foreach (SpriteRenderer i in SpriteRenderersOfHp)
+            {
+                i.sortingOrder = 40;
+            }
+
+            foreach (SpriteRenderer i in SpriteRenderersOfSta)
+            {
+                i.sortingOrder = 40;
+            }
+
+            // 기본스프라이트들
+            SpriteRendererOfMainsprite.sortingOrder = 30;
+            SpriteRendererOfBackSprite.sortingOrder = 20;
+        }
+        else
+        {
+            // 체력바들 뒤로
+            foreach (SpriteRenderer i in SpriteRenderersOfHp)
+            {
+                i.sortingOrder = -6;
+            }
+
+            foreach (SpriteRenderer i in SpriteRenderersOfSta)
+            {
+                i.sortingOrder = -6;
+            }
+            //Debug.Log(name);
+
+            // 기본스프라이트들
+            SpriteRendererOfMainsprite.sortingOrder = -7;
+            SpriteRendererOfBackSprite.sortingOrder = -8;
+        }
     }
 
 }

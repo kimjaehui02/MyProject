@@ -6,7 +6,7 @@ public class HeroKnight : MonoBehaviour {
 
     [SerializeField] float m_speed = 4.0f;
     [SerializeField] float m_jumpForce = 7.5f;
-    [SerializeField] float m_rollForce = 6.0f;
+    //[SerializeField] float m_rollForce = 6.0f;
 
     [SerializeField] GameObject @object;
 
@@ -25,7 +25,7 @@ public class HeroKnight : MonoBehaviour {
     private bool                m_isWallSliding = false;
     private bool                m_grounded = false;
     private bool                m_rolling = false;
-    private int                 m_facingDirection = 1;
+    //private int                 m_facingDirection = 1;
     private int                 m_currentAttack = 0;
     private float               m_timeSinceAttack = 0.0f;
     private float               m_delayToIdle = 0.0f;
@@ -119,13 +119,13 @@ public class HeroKnight : MonoBehaviour {
         if (inputX > 0)
         {
             @object.GetComponent<SpriteRenderer>().flipX = false;
-            m_facingDirection = 1;
+            //m_facingDirection = 1;
         }
 
         else if (inputX < 0)
         {
             @object.GetComponent<SpriteRenderer>().flipX = true;
-            m_facingDirection = -1;
+           // m_facingDirection = -1;
         }
 
         // Move

@@ -132,7 +132,6 @@ public class UiManager : MonoBehaviour
 
     #region 리폼
 
-    #region 데이터
 
     public List<StruckOfAct> stackOfActs;
 
@@ -146,11 +145,38 @@ public class UiManager : MonoBehaviour
     /// </summary>
     public List<int> listIntOfNoteEachE;
 
+    /// <summary>
+    /// 전투씬에서 확대하여 보여줄 대상입니다
+    /// </summary>
+    public int intOfFocus;
+
+    #region 페이즈 전환시 나오는 화면효과 관리
+
+    /// <summary>
+    /// 이 값이 트루가 되어야 페이즈전환Ui가 시작됨
+    /// </summary>
+    public bool PhaseChagebool;
+    /// <summary>
+    /// 페이즈 UI과정은 이 플로트 변수를 따름
+    /// </summary>
+    public float PhaseChagefloat;
+
+    /// <summary>
+    /// 페이즈 전환때 나오는 글입니다
+    /// </summary>
+    public GameObject FadeOutOfText;
+
+    /// <summary>
+    /// 화면가리개입니다
+    /// </summary>
+    public Image FadeOutOfUi;
     #endregion
 
 
-    #region 그래픽
 
+    /// <summary>
+    /// 하단ui에 노트숫자를 알려주는건데 지금은 안씁니다
+    /// </summary>
     public List<List<Image>> listListSpriteRendererOfNoteP;
 
     public List<List<Image>> listListSpriteRendererOfNoteE;
@@ -177,12 +203,17 @@ public class UiManager : MonoBehaviour
     /// </summary>
     public List<GameObject> PartyOfEnemy { get; set; }
 
-    public GameObject focusing;
+    /// <summary>
+    /// 화면가리개입니다
+    /// </summary>
+    public GameObject FadeOutOfBattle;
 
+
+
+    /// <summary>
+    /// 물리엔진으로 이동하는 두 오브젝트입니다 전투할떄 캐릭터가 여기에 달려서 움직입니다
+    /// </summary>
     public List<GameObject> target12; 
-
-    #endregion
-
 
     #endregion
 
