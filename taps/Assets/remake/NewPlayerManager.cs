@@ -16,6 +16,9 @@ public class NewPlayerManager : MonoBehaviour
     //[SerializeField] GameObject m_slideDust;
 
     private Animator m_animator;
+
+    public List<Animator> animators;
+
     private Rigidbody2D m_body2d;
     private Sensor_HeroKnight m_groundSensor;
     private Sensor_HeroKnight m_wallSensorR1;
@@ -103,6 +106,11 @@ public class NewPlayerManager : MonoBehaviour
         {
             m_grounded = true;
             m_animator.SetBool("Grounded", m_grounded);
+
+            foreach(Animator i in animators)
+            {
+                i.SetBool("Grounded", m_grounded);
+            }
         }
 
         //Check if character just started falling
@@ -110,6 +118,11 @@ public class NewPlayerManager : MonoBehaviour
         {
             m_grounded = false;
             m_animator.SetBool("Grounded", m_grounded);
+
+            foreach (Animator i in animators)
+            {
+                i.SetBool("Grounded", m_grounded);
+            }
         }
 
         // -- Handle input and movement --
@@ -119,12 +132,21 @@ public class NewPlayerManager : MonoBehaviour
         if (inputX > 0)
         {
             @object.GetComponent<SpriteRenderer>().flipX = false;
+
+            foreach (Animator i in animators)
+            {
+                i.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            }
             //m_facingDirection = 1;
         }
 
         else if (inputX < 0)
         {
             @object.GetComponent<SpriteRenderer>().flipX = true;
+            foreach (Animator i in animators)
+            {
+                i.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            }
             //m_facingDirection = -1;
         }
 
@@ -138,10 +160,20 @@ public class NewPlayerManager : MonoBehaviour
         //Set AirSpeed in animator
         m_animator.SetFloat("AirSpeedY", m_body2d.velocity.y);
 
+        foreach (Animator i in animators)
+        {
+            i.SetFloat("AirSpeedY", m_body2d.velocity.y);
+        }
+
         // -- Handle Animations --
         //Wall Slide
         m_isWallSliding = (m_wallSensorR1.State() && m_wallSensorR2.State()) || (m_wallSensorL1.State() && m_wallSensorL2.State());
         m_animator.SetBool("WallSlide", m_isWallSliding);
+
+        foreach (Animator i in animators)
+        {
+            i.SetBool("WallSlide", m_isWallSliding);
+        }
 
         //Death
         //if (Input.GetKeyDown("e") && !m_rolling)
@@ -203,8 +235,20 @@ public class NewPlayerManager : MonoBehaviour
         if (Input.GetKeyDown("space") && m_grounded)// && !m_rolling)
         {
             m_animator.SetTrigger("Jump");
+
+            foreach (Animator i in animators)
+            {
+                i.SetTrigger("Jump");
+            }
+
             m_grounded = false;
             m_animator.SetBool("Grounded", m_grounded);
+
+            foreach (Animator i in animators)
+            {
+                i.SetBool("Grounded", m_grounded);
+            }
+
             m_body2d.velocity = new Vector2(m_body2d.velocity.x, m_jumpForce);
             m_groundSensor.Disable(0.2f);
         }
@@ -215,6 +259,11 @@ public class NewPlayerManager : MonoBehaviour
             // Reset timer
             m_delayToIdle = 0.05f;
             m_animator.SetInteger("AnimState", 1);
+
+            foreach (Animator i in animators)
+            {
+                i.SetInteger("AnimState", 1);
+            }
         }
 
         //Idle
@@ -223,7 +272,15 @@ public class NewPlayerManager : MonoBehaviour
             // Prevents flickering transitions to idle
             m_delayToIdle -= Time.deltaTime;
             if (m_delayToIdle < 0)
+            {
                 m_animator.SetInteger("AnimState", 0);
+
+                foreach (Animator i in animators)
+                {
+                    i.SetInteger("AnimState", 0);
+                }
+            }
+
         }
     }
 

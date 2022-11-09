@@ -218,3 +218,13 @@ public class UiManager : MonoBehaviour
     #endregion
 
 }
+
+/*
+필요한 오브젝트:
+    상단 페이즈를 보여주는 Ui
+    중단 전투 캐릭터들의 오브젝트
+    
+
+
+ 
+ */
