@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
     IEnumerator FadeOut(string sname, float colora = 0)
     {
         //Debug.Log(2);
-        yield return new WaitForSeconds(0.001f);
+        yield return new WaitForSecondsRealtime(0.001f);
 
         if (colora >= 255)
         {
@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
     IEnumerator Fadeint(float colora = 255)
     {
         //Debug.Log(2);
-        yield return new WaitForSeconds(0.001f);
+        yield return new WaitForSecondsRealtime(0.001f);
 
         if (colora <= 0)
         {

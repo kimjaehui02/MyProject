@@ -54,6 +54,21 @@ public class RealBattleManager : MonoBehaviour
     public GameObject gameObjectOfNoteUi;
 
     /// <summary>
+    /// 노트들입니다
+    /// </summary>
+    public List<GameObject> listGameObjectOfNote;
+
+    /// <summary>
+    /// 체크선을 표시하는 오브젝트입니다
+    /// </summary>
+    public GameObject gameObjectOfCheck;
+
+    /// <summary>
+    /// 노트가 지나다니는 길의 길이
+    /// </summary>
+    public float floatOfRouteOfNote;
+
+    /// <summary>
     /// 노트가 남아있는 시간
     /// </summary>
     public float floatOfRemainOfNote;
@@ -101,6 +116,16 @@ public class RealBattleManager : MonoBehaviour
     /// </summary>
     public int intOfEnemyFocus;
 
+    /// <summary>
+    /// 아군의 위치
+    /// </summary>
+    public List<Vector3> listVector3OfPlayerPosition;
+
+    /// <summary>
+    /// 적들의 위치
+    /// </summary>
+    //public List<Vector3> listVector3OfEnemyPosition;
+
     #endregion
 
     #endregion
@@ -109,12 +134,57 @@ public class RealBattleManager : MonoBehaviour
     {
         NomalUpdate();
         BattleUpdate();
+        Notetransform();
+        NoteOutCheck();
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            listGameObjectOfParty[intOfPlayerFocus].GetComponent<PlayerObjectManager>().Animinput();
+
+            Check();
+        }
     }
 
 
     #region 지속적인 처리
+
+
     public void NomalUpdate()
     {
+        for (int i = 0; i < listGameObjectOfParty.Count; i++)
+        {
+            listGameObjectOfParty[(i + intOfPlayerFocus) % listGameObjectOfParty.Count].transform.localPosition = listVector3OfPlayerPosition[i];
+
+
+            if (i == 0)
+            {
+                listGameObjectOfParty[(i + intOfPlayerFocus) % listGameObjectOfParty.Count].transform.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                listGameObjectOfParty[(i + intOfPlayerFocus) % listGameObjectOfParty.Count].transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+
+            }
+
+        }
+
+        for (int i = 0; i < listGameObjectOfEnemyParty.Count; i++)
+        {
+            listGameObjectOfEnemyParty[(i + intOfPlayerFocus) % listGameObjectOfEnemyParty.Count].transform.localPosition = listVector3OfPlayerPosition[i];
+
+
+            if (i == 0)
+            {
+                listGameObjectOfEnemyParty[(i + intOfPlayerFocus) % listGameObjectOfEnemyParty.Count].transform.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                listGameObjectOfEnemyParty[(i + intOfPlayerFocus) % listGameObjectOfEnemyParty.Count].transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+
+            }
+
+        }
+
 
     }
 
@@ -126,6 +196,211 @@ public class RealBattleManager : MonoBehaviour
             intOfPlayerFocus %= listGameObjectOfParty.Count;
         }
     }
+
+    #region 노트들의 처리
+
+    #region 노트중에서도 지속적인 애들
+    public void NoteOutCheck()
+    {
+        for (int i = 0; i < listFloatOfNotePosition.Count; i++)
+        {
+            if(listFloatOfNotePosition[i] > floatOfRemainOfNote)
+            {
+                listGameObjectOfNote[i].SetActive(false);
+                listFloatOfNotePosition[i] = 0f;
+            }
+        }
+    }
+
+
+
+    /// <summary>
+    /// 노트의 좌표를 계산
+    /// </summary>
+    public void Notetransform()
+    {
+
+        // 노트들을 훑어가며 이동을 시켜줍니다
+        for (int i = 0; i < listGameObjectOfNote.Count; i++)//floatOfNote.Count; i++)
+        {
+            if (listGameObjectOfNote[i].activeSelf == false)
+            {
+                continue;
+            }
+
+
+            // 노트들의 시간값을 더해 이동하게 만듭니다
+            listFloatOfNotePosition[i] += Time.fixedDeltaTime;
+
+
+        }
+
+
+
+        // 길이를 시간으로 나누어서 노트가 이동하는 시간을 구함
+        float speedOfNote = floatOfRouteOfNote / floatOfRemainOfNote;
+
+        // 노트의 길이를 대입하기(노트의 속도 * 성공 시간)
+        Vector3 size = new Vector3(speedOfNote* floatOfJustTimeOfNote, 100, 0);
+        Vector3 size2 = new Vector3(speedOfNote* floatOfNomalTimeOfNote, 100, 0);
+
+        for (int i = 0; i < listFloatOfNotePosition.Count; i++)
+        {
+            if (listGameObjectOfNote[i].activeSelf == false)
+            {
+                continue;
+            }
+            // 범위가 좁은 정확한 성공범위를 표시합니다
+            listGameObjectOfNote[i].transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = size;
+            // 범위가 넓은 쉬운 성공범위를 표시합니다
+            listGameObjectOfNote[i].transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = size2;
+        }
+
+
+        // 노트의 좌표를 대입하기(노트의 속도 * 노트가 지난 시간)
+        for (int i = 0; i < listFloatOfNotePosition.Count; i++)
+        {
+            if (listGameObjectOfNote[i] == null)
+            {
+                continue;
+            }
+            float moving = speedOfNote * listFloatOfNotePosition[i] - (floatOfRouteOfNote * 0.5f);
+            listGameObjectOfNote[i].transform.localPosition = new Vector3(-moving, 0, 0);
+        }
+
+        //noteCheck.transform.localPosition = new Vector3(speedOfNote * floatOfNote[0]-750, 0, 0);
+
+        // 체크지점 표시하기
+        float index = (floatOfCheckTime - 0.5f) * floatOfRouteOfNote;
+        gameObjectOfCheck.transform.localPosition = new Vector3(-index, 0, 0);
+
+    }
+
+
+    #endregion
+    /// <summary>
+    /// 노트들을 생성합니다
+    /// </summary>
+    public void NoteOn()
+    {
+        foreach (GameObject i in listGameObjectOfNote)
+        {
+            if (i.activeSelf == false)
+            {
+                i.SetActive(true);
+
+                i.GetComponent<RectTransform>().localPosition = new Vector3(500, 0, 0);
+
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 버튼을 눌렀을때 실행하여 노트의 위치를 체크합니다
+    /// </summary>
+    public int Check()
+    {
+        // 성공을 리턴합니다
+        int able = 0;
+
+        // 헛타를 쳤는지를 검사합니다
+        bool missCheck = false;
+        // 체크지점을 비교하기위해서 백분율과 곱해줍니다 지속시간의 75퍼센트 지점을 나타냅니다
+        float index = (floatOfCheckTime) * floatOfRemainOfNote;
+
+        // 노트들을 순회하면서 체크합니다
+        for (int i = 0; i < listGameObjectOfNote.Count; i++)
+        {
+            // 비활성화되어서 나오지 않은 노트는 검사하지않습니다
+            if (listGameObjectOfNote[i].activeSelf == false)
+            {
+                continue;
+            }
+
+            // 앞뒤로 절반씩 나눠서 범위에 들어오면 정타효과를 낸다
+            // 정확한 지점은 noteCheckfloat * remainOfNote
+
+            // 노트의 범위가 맞는지 체크를 합니다
+            if (index + (floatOfJustTimeOfNote * 0.55f) > listFloatOfNotePosition[i] &&
+                index - (floatOfJustTimeOfNote * 0.55f) < listFloatOfNotePosition[i] &&
+                listGameObjectOfNote[i].activeSelf == true)
+            {
+                // 무작위로 소리클립을 재생합니다
+                //damageManager.SwordClip(Random.Range(3, 5));
+
+                Debug.Log(22222222);
+                NoteAttack();
+                // 위치 원상복구
+
+                listGameObjectOfNote[i].GetComponent<RectTransform>().localPosition = new Vector3(500, 0, 0);
+                listFloatOfNotePosition[i] = 0;
+                // 성공했으니 노트를 비활성화 합니다
+                listGameObjectOfNote[i].SetActive(false);
+                // 데미지를 계산하여 입힙니다
+                //damageManager.CalculationOfDamage(List2StructOfFightOfCastEnemy[i]);
+                able = 2;
+                missCheck = true;
+
+                break;
+            }
+            // 정확히 성공하지 못했다면 평범하게라도 성공했는지 뭍습니다
+            else if (index + (floatOfNomalTimeOfNote * 0.55f) > listFloatOfNotePosition[i] &&
+                    index - (floatOfNomalTimeOfNote * 0.55f) < listFloatOfNotePosition[i] &&
+                    listGameObjectOfNote[i].activeSelf == true)
+            {
+                //damageManager.SwordClip(Random.Range(3, 5));
+                Debug.Log(111111111);
+                NoteAttack();
+                // 위치 원상복구
+                listGameObjectOfNote[i].GetComponent<RectTransform>().localPosition = new Vector3(500, 0, 0);
+                listFloatOfNotePosition[i] = 0;
+
+                listGameObjectOfNote[i].SetActive(false);
+                missCheck = true;
+
+                // 데미지를 계산하여 입힙니다
+                //damageManager.CalculationOfDamage(List2StructOfFightOfCastEnemy[i]);
+                able = 1;
+
+                break;
+            }
+
+        }
+
+        if (missCheck == false)
+        {
+            //damageManager.MissClip();
+        }
+
+        return able;
+
+    }
+
+
+    public void NoteAttack(int checks = 0)
+    {
+        listGameObjectOfParty[intOfPlayerFocus].GetComponent<PlayerObjectManager>().Animinput();
+
+        switch (checks)
+        {
+            case 2:
+
+                break;
+
+            case 1:
+                break;
+
+            default:
+
+                break;
+
+        }
+        listGameObjectOfParty[intOfPlayerFocus].GetComponent<PlayerObjectManager>().StaDamage();
+    }
+
+    #endregion
+
     #endregion
 
     #region 단발적인 처리

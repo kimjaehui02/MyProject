@@ -190,6 +190,7 @@ public class NoteManager : MonoBehaviour
         // 노트의 길이를 대입하기(노트의 속도 * 성공 시간)
         Vector3 size = new (speedOfNote * justOfNote, 100, 0);
         Vector3 size2 = new (speedOfNote * normalOfNote, 100, 0);
+
         for (int i = 0; i < floatOfNote.Count; i++)
         {
             if (objectOfNote[i].activeSelf == false)
