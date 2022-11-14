@@ -139,8 +139,10 @@ public class RealBattleManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
             listGameObjectOfParty[intOfPlayerFocus].GetComponent<PlayerObjectManager>().Animinput();
 
+            // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
             Check();
         }
     }
@@ -148,8 +150,7 @@ public class RealBattleManager : MonoBehaviour
 
     #region 지속적인 처리
 
-
-    public void NomalUpdate()
+    private void NomalUpdate()
     {
         for (int i = 0; i < listGameObjectOfParty.Count; i++)
         {
@@ -188,7 +189,7 @@ public class RealBattleManager : MonoBehaviour
 
     }
 
-    public void BattleUpdate()
+    private void BattleUpdate()
     {
         if(Input.GetKeyDown(KeyCode.Tab))
         {
@@ -200,7 +201,8 @@ public class RealBattleManager : MonoBehaviour
     #region 노트들의 처리
 
     #region 노트중에서도 지속적인 애들
-    public void NoteOutCheck()
+
+    private void NoteOutCheck()
     {
         for (int i = 0; i < listFloatOfNotePosition.Count; i++)
         {
@@ -214,14 +216,15 @@ public class RealBattleManager : MonoBehaviour
 
 
 
+    // ReSharper disable Unity.PerformanceAnalysis
     /// <summary>
     /// 노트의 좌표를 계산
     /// </summary>
-    public void Notetransform()
+    private void Notetransform()
     {
 
         // 노트들을 훑어가며 이동을 시켜줍니다
-        for (int i = 0; i < listGameObjectOfNote.Count; i++)//floatOfNote.Count; i++)
+        for (var i = 0; i < listGameObjectOfNote.Count; i++)//floatOfNote.Count; i++)
         {
             if (listGameObjectOfNote[i].activeSelf == false)
             {
@@ -238,13 +241,13 @@ public class RealBattleManager : MonoBehaviour
 
 
         // 길이를 시간으로 나누어서 노트가 이동하는 시간을 구함
-        float speedOfNote = floatOfRouteOfNote / floatOfRemainOfNote;
+        var speedOfNote = floatOfRouteOfNote / floatOfRemainOfNote;
 
         // 노트의 길이를 대입하기(노트의 속도 * 성공 시간)
-        Vector3 size = new Vector3(speedOfNote* floatOfJustTimeOfNote, 100, 0);
-        Vector3 size2 = new Vector3(speedOfNote* floatOfNomalTimeOfNote, 100, 0);
+        var size = new Vector3(speedOfNote* floatOfJustTimeOfNote, 100, 0);
+        var size2 = new Vector3(speedOfNote* floatOfNomalTimeOfNote, 100, 0);
 
-        for (int i = 0; i < listFloatOfNotePosition.Count; i++)
+        for (var i = 0; i < listFloatOfNotePosition.Count; i++)
         {
             if (listGameObjectOfNote[i].activeSelf == false)
             {
@@ -264,7 +267,7 @@ public class RealBattleManager : MonoBehaviour
             {
                 continue;
             }
-            float moving = speedOfNote * listFloatOfNotePosition[i] - (floatOfRouteOfNote * 0.5f);
+            var moving = speedOfNote * listFloatOfNotePosition[i] - (floatOfRouteOfNote * 0.5f);
             listGameObjectOfNote[i].transform.localPosition = new Vector3(-moving, 0, 0);
         }
 
@@ -296,6 +299,7 @@ public class RealBattleManager : MonoBehaviour
         }
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     /// <summary>
     /// 버튼을 눌렀을때 실행하여 노트의 위치를 체크합니다
     /// </summary>

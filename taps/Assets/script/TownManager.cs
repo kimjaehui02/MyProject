@@ -119,7 +119,7 @@ public class TownManager : MonoBehaviour
     {
         //Game.GetComponent<RectTransform>().position = Input.mousePosition;
         Spritechange();
-        PickParty();
+        //PickParty();
     }
 
     private void PickParty()
