@@ -33,8 +33,21 @@ public class GameManager : MonoBehaviour
     public List<DataOfParty> Party { get; set; }
 
     public GameObject FadeOutObject;
+    public Image FadeOutObjectImage;
 
     public bool sceneMoving;
+
+
+    [SerializeField]
+    private float floatOfFadeTimeMax;
+
+    [SerializeField]
+    private float floatOfFadeTime;
+
+    [SerializeField]
+    private int intOfFadein;
+
+    private string stringOfSceneName;
 
     //TitleScene, TownScene, BattleScene
     private void Start()
@@ -44,18 +57,73 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         singleAwake();
+        FadeOutObjectImage = FadeOutObject.GetComponent<Image>();
+    }
+
+    private void Update()
+    {
+        SceneFadeOut();
+        SceneFadeIn();
     }
 
     public void MoveScene(string sname)
     {
+        // 씬이 이동중이면 또 이동하지 않게 만듭니다
         if(sceneMoving == true)
         {
             return;
         }
+
+        // 씬이 이동중이라고 알려줍니다
         sceneMoving = true;
+
+        // 
         FadeOutObject.SetActive(true);
-        StartCoroutine(FadeOut(sname));
+        stringOfSceneName = sname;
+        intOfFadein++;
         //SceneManager.LoadScene(name);
+    }
+
+
+    private void SceneFadeOut()
+    {
+        if(intOfFadein != 1)
+        {
+            return;
+        }
+
+        floatOfFadeTime += Time.deltaTime;
+
+        float colora = floatOfFadeTime / floatOfFadeTimeMax;
+        FadeOutObjectImage.color = new Color(0 / 255f, 0 / 255f, 0 / 255f, (255 * colora) / 255f);
+
+        // 지정 시간이 넘으면 이동합니다
+        if (floatOfFadeTimeMax < floatOfFadeTime)
+        {
+            SceneManager.LoadScene(stringOfSceneName);
+            intOfFadein++;
+        }
+    }
+
+    private void SceneFadeIn()
+    {
+        if (intOfFadein != 2)
+        {
+            return;
+        }
+
+        floatOfFadeTime -= Time.deltaTime;
+
+        float colora = floatOfFadeTime / floatOfFadeTimeMax;
+
+        FadeOutObjectImage.color = new Color(0 / 255f, 0 / 255f, 0 / 255f, (255 * colora) / 255f);
+
+        // 지정 시간이 넘으면 이동합니다
+        if (floatOfFadeTime < 0)
+        {
+            FadeOutObject.SetActive(false);
+            intOfFadein = 0;
+        }
     }
 
 

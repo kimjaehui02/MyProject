@@ -152,11 +152,13 @@ public class RealBattleManager : MonoBehaviour
 
     private void NomalUpdate()
     {
+        // 플레이어들을 위치에 따라서 확대 크기를 정합니다
         for (int i = 0; i < listGameObjectOfParty.Count; i++)
         {
+            // 캐릭터들을 배치합니다
             listGameObjectOfParty[(i + intOfPlayerFocus) % listGameObjectOfParty.Count].transform.localPosition = listVector3OfPlayerPosition[i];
 
-
+            // 위치가 0이면 확대하고 아니면 축소합니다
             if (i == 0)
             {
                 listGameObjectOfParty[(i + intOfPlayerFocus) % listGameObjectOfParty.Count].transform.localScale = new Vector3(1, 1, 1);
@@ -169,8 +171,10 @@ public class RealBattleManager : MonoBehaviour
 
         }
 
+        // 적 캐릭터들 역시 해줍니다
         for (int i = 0; i < listGameObjectOfEnemyParty.Count; i++)
         {
+            // 캐릭터들을 배치합니다
             listGameObjectOfEnemyParty[(i + intOfPlayerFocus) % listGameObjectOfEnemyParty.Count].transform.localPosition = listVector3OfPlayerPosition[i];
 
 

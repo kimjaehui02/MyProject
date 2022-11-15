@@ -223,3 +223,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FadeOutObject: {fileID: 579257479747600124}
+  FadeOutObjectImage: {fileID: 0}
+  sceneMoving: 0
+  floatOfFadeTimeMax: 0.4
+  floatOfFadeTime: 0
+  intOfFadein: 0
