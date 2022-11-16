@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     {
         singleAwake();
         FadeOutObjectImage = FadeOutObject.GetComponent<Image>();
+        sceneMoving = false;
     }
 
     private void Update()
@@ -123,6 +124,7 @@ public class GameManager : MonoBehaviour
         {
             FadeOutObject.SetActive(false);
             intOfFadein = 0;
+            sceneMoving = false;
         }
     }
 

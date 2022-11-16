@@ -67,7 +67,7 @@ public class TownManager : MonoBehaviour
     void FixedUpdate()
     {
         LimitCameraArea();
-        BackGroundManage();
+
     }
 
     void LimitCameraArea()
@@ -101,8 +101,11 @@ public class TownManager : MonoBehaviour
         
         GameObject2.transform.position = new Vector3( -moveSpeed2 * test, GameObject2.transform.position.y, GameObject2.transform.position.z);
 
-        if(playerTransform.position.x > mapSize.x)
+
+
+        if (playerTransform.position.x > mapSize.x)
         {
+            //Debug.Log(123);
             GameManager.instance.MoveScene(GetVs[1]);
 
         }
@@ -119,6 +122,7 @@ public class TownManager : MonoBehaviour
     {
         //Game.GetComponent<RectTransform>().position = Input.mousePosition;
         Spritechange();
+        BackGroundManage();
         //PickParty();
     }
 

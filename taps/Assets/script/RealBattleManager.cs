@@ -20,7 +20,7 @@ public class RealBattleManager : MonoBehaviour
     /// 배경 오브젝트들
     /// </summary>
     public GameObject gameObjectOfBackGround;
-    
+
 
 
 
@@ -29,6 +29,20 @@ public class RealBattleManager : MonoBehaviour
     #endregion
 
     #region 용도별
+
+    #region 전투 화면 오브젝트들
+
+    /// <summary>
+    /// 전투떄 카메라 자식오브젝트인 배플 유아이들입니다
+    /// </summary>
+    public GameObject gameObjectOfBattleObject;
+
+    /// <summary>
+    /// 전투떄 자신의 자식 오브젝트에 있는 캔버스입니다
+    /// </summary>
+    public GameObject gameObjectOfBattleUi;
+
+    #endregion
 
     #region 상단 페이즈 ui
 
