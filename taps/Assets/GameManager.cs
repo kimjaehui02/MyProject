@@ -30,7 +30,9 @@ public class GameManager : MonoBehaviour
     //[field: SerializeField]
 
     [field: SerializeField]
-    public List<DataOfParty> Party { get; set; }
+    public List<RealPlayer> listRealPlayer { get; set; }
+
+    #region 화면전환 처리용
 
     public GameObject FadeOutObject;
     public Image FadeOutObjectImage;
@@ -48,6 +50,8 @@ public class GameManager : MonoBehaviour
     private int intOfFadein;
 
     private string stringOfSceneName;
+
+    #endregion
 
     //TitleScene, TownScene, BattleScene
     private void Start()

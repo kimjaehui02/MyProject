@@ -30,10 +30,19 @@ public class RealBattleManager : MonoBehaviour
 
     #region 용도별
 
+    #region 개전
+
+    /// <summary>
+    /// 시작페이즈가 끝난지 알려주는 불입니다
+    /// </summary>
+    public bool boolOfStartEnd;
+
+    #endregion
+
     #region 전투 화면 오브젝트들
 
     /// <summary>
-    /// 전투떄 카메라 자식오브젝트인 배플 유아이들입니다
+    /// 전투떄 카메라 자식오브젝트인 배틀 오브젝트들입니다
     /// </summary>
     public GameObject gameObjectOfBattleObject;
 
@@ -135,10 +144,17 @@ public class RealBattleManager : MonoBehaviour
     /// </summary>
     public List<Vector3> listVector3OfPlayerPosition;
 
+
+
     /// <summary>
-    /// 적들의 위치
+    /// 플레이어 캐릭터 프리펩
     /// </summary>
-    //public List<Vector3> listVector3OfEnemyPosition;
+    public List<GameObject> listGameObjectOfPlayerPrefab;
+
+    /// <summary>
+    /// 적 캐릭터들 프리펩
+    /// </summary>
+    public List<GameObject> listGameObjectOfEnemyPrefab;
 
     #endregion
 
@@ -146,10 +162,15 @@ public class RealBattleManager : MonoBehaviour
 
     private void Update()
     {
-        NomalUpdate();
-        BattleUpdate();
-        Notetransform();
-        NoteOutCheck();
+        if(boolOfStartEnd == true)
+        {
+            NomalUpdate();
+            BattleUpdate();
+            Notetransform();
+            NoteOutCheck();
+        }
+
+
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -164,6 +185,9 @@ public class RealBattleManager : MonoBehaviour
 
     #region 지속적인 처리
 
+    /// <summary>
+    /// 기본적인 플레이어 캐릭터들을 배치합니다
+    /// </summary>
     private void NomalUpdate()
     {
         // 플레이어들을 위치에 따라서 확대 크기를 정합니다
@@ -207,6 +231,9 @@ public class RealBattleManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 키를 눌러서 캐릭터를 교체합니다
+    /// </summary>
     private void BattleUpdate()
     {
         if(Input.GetKeyDown(KeyCode.Tab))
@@ -220,6 +247,9 @@ public class RealBattleManager : MonoBehaviour
 
     #region 노트중에서도 지속적인 애들
 
+    /// <summary>
+    /// 범위 밖으로 나간 노트를 처치합니다
+    /// </summary>
     private void NoteOutCheck()
     {
         for (int i = 0; i < listFloatOfNotePosition.Count; i++)
@@ -351,7 +381,6 @@ public class RealBattleManager : MonoBehaviour
                 // 무작위로 소리클립을 재생합니다
                 //damageManager.SwordClip(Random.Range(3, 5));
 
-                Debug.Log(22222222);
                 NoteAttack();
                 // 위치 원상복구
 
@@ -372,7 +401,6 @@ public class RealBattleManager : MonoBehaviour
                     listGameObjectOfNote[i].activeSelf == true)
             {
                 //damageManager.SwordClip(Random.Range(3, 5));
-                Debug.Log(111111111);
                 NoteAttack();
                 // 위치 원상복구
                 listGameObjectOfNote[i].GetComponent<RectTransform>().localPosition = new Vector3(500, 0, 0);
@@ -400,6 +428,10 @@ public class RealBattleManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 노트를 성공했을때 할 작업들입니다
+    /// </summary>
+    /// <param name="checks"></param>
     public void NoteAttack(int checks = 0)
     {
         listGameObjectOfParty[intOfPlayerFocus].GetComponent<PlayerObjectManager>().Animinput();
@@ -427,13 +459,53 @@ public class RealBattleManager : MonoBehaviour
 
     #region 단발적인 처리
 
-    public void BattleStart()
+    /// <summary>
+    /// 이 함수를 호출하면 전투 화면이 나옵니다
+    /// </summary>
+    public void BattleStarter()
     {
+        List<int> listIntInput = new();
+        listIntInput.Add(3);
+        listIntInput.Add(3);
+        listIntInput.Add(0);
+        listIntInput.Add(1);
+
+        // 배틀용 오브젝트와 ui를 활성화 합니다
+        gameObjectOfBattleObject.SetActive(true);
+        gameObjectOfBattleUi.SetActive(true);
 
 
+
+
+        // 플레이어측을 생성합니다
+        for (int i = 0; i < 4; i++)
+        {
+            var party = Instantiate(listGameObjectOfPlayerPrefab[i]);
+            party.transform.parent = gameObjectOfBattleObject.transform.GetChild(0);
+            listGameObjectOfParty.Add(party);
+        }
+
+
+        // 적군측을 생성합니다
+        for (int i = 0; i < listIntInput.Count; i++)
+        {
+            var party = Instantiate(listGameObjectOfEnemyPrefab[listIntInput[i]]);
+
+
+
+            party.transform.parent = gameObjectOfBattleObject.transform.GetChild(1);
+            listGameObjectOfEnemyParty.Add(party);
+        }
+
+        NomalUpdate();
+
+        boolOfStartEnd = true;
     }
 
-    public void BattleEnd()
+    /// <summary>
+    /// 이 함수를 호출하면 전투가 끝납니다
+    /// </summary>
+    public void BattleEnder()
     {
 
     }

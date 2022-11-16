@@ -639,8 +639,8 @@ public class BattleManager : MonoBehaviour
         float UiDark = 155f;
 
         // 페이즈를 알려주는 텍스트가 존재할 위치들입니다
-        float textstart = 550;
-        float textend = 240;
+        //float textstart = 550;
+        //float textend = 240;
 
         //float textcal = textstart - textend;
 
