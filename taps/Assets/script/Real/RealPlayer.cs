@@ -18,6 +18,16 @@ public class RealPlayer : RealParty
     /// 1. 플레이어 2. 기사 3. 사무라이 4. 수도승
     /// </summary>
     public int intOfType;
+
+    public void NewPlayer(float hp, float sta, int type)
+    {
+        floatOfMaxHp = 4;
+        floatOfMaxStamina = 8;
+        floatOfHp = hp;
+        floatOfStamina = sta;
+        intOfType = type;
+
+    }
 }
 
 

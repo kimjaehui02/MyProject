@@ -57,12 +57,16 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //MoveScene("TownScene");
+        PlayerStart();
+        PlayerStart();
+
     }
     private void Awake()
     {
         singleAwake();
         FadeOutObjectImage = FadeOutObject.GetComponent<Image>();
         sceneMoving = false;
+        listRealPlayer = new();
     }
 
     private void Update()
@@ -70,6 +74,8 @@ public class GameManager : MonoBehaviour
         SceneFadeOut();
         SceneFadeIn();
     }
+
+    #region 씬이동 및 게임 운용에 쓰이는 함수
 
     public void MoveScene(string sname)
     {
@@ -132,6 +138,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+    public void PlayerStart()
+    {
+
+
+        RealPlayer realPlayer = new();
+        realPlayer.NewPlayer(listRealPlayer.Count+1f, listRealPlayer.Count, listRealPlayer.Count);
+
+        listRealPlayer.Add(realPlayer);
+        Debug.Log(listRealPlayer.Count);
+    }
 
     #region 코루틴
     IEnumerator FadeOut(string sname, float colora = 0)

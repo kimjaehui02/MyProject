@@ -464,11 +464,9 @@ public class RealBattleManager : MonoBehaviour
     /// </summary>
     public void BattleStarter()
     {
-        List<int> listIntInput = new();
-        listIntInput.Add(3);
-        listIntInput.Add(3);
-        listIntInput.Add(0);
-        listIntInput.Add(1);
+
+        var gm = GameManager.instance.listRealPlayer;
+
 
         // 배틀용 오브젝트와 ui를 활성화 합니다
         gameObjectOfBattleObject.SetActive(true);
@@ -478,18 +476,21 @@ public class RealBattleManager : MonoBehaviour
 
 
         // 플레이어측을 생성합니다
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < gm.Count; i++)
         {
-            var party = Instantiate(listGameObjectOfPlayerPrefab[i]);
+            var party = Instantiate(listGameObjectOfPlayerPrefab[gm[i].intOfType]);
             party.transform.parent = gameObjectOfBattleObject.transform.GetChild(0);
+
+            party.GetComponent<PlayerObjectManager>().Setting(gm[i].floatOfHp, gm[i].floatOfStamina);
+
             listGameObjectOfParty.Add(party);
         }
 
 
         // 적군측을 생성합니다
-        for (int i = 0; i < listIntInput.Count; i++)
+        for (int i = 0; i < 4; i++)
         {
-            var party = Instantiate(listGameObjectOfEnemyPrefab[listIntInput[i]]);
+            var party = Instantiate(listGameObjectOfEnemyPrefab[i]);
 
 
 
@@ -507,6 +508,22 @@ public class RealBattleManager : MonoBehaviour
     /// </summary>
     public void BattleEnder()
     {
+
+        gameObjectOfBattleObject.SetActive(false);
+        gameObjectOfBattleUi.SetActive(false);
+
+        foreach (var i in listGameObjectOfParty)
+        {
+            Destroy(i);
+        }
+
+        foreach (var i in listGameObjectOfEnemyParty)
+        {
+            Destroy(i);
+        }
+
+        listGameObjectOfParty.Clear();
+        listGameObjectOfEnemyParty.Clear();
 
     }
 

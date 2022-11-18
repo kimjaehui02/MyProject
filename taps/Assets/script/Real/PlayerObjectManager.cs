@@ -134,6 +134,15 @@ public class PlayerObjectManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 체력과 스태미너를 세팅합니다
+    /// </summary>
+    public void Setting(float hp, float sta)
+    {
+        intOfHp = (int)hp;
+        intOfSta = (int)sta;
+    }
+
+    /// <summary>
     /// 체력데미지를 입습니다
     /// </summary>
     /// <param name="damage"></param>

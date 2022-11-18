@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RealParty : MonoBehaviour
+public class RealParty
 {
     /// <summary>
     /// 최대체력
