@@ -4,22 +4,24 @@ using UnityEngine;
 
 public class RealBattleManager : MonoBehaviour
 {
+    public SceneStartManager sceneStartManager;
+
     #region  오브젝트
 
     /// <summary>
     /// 사운드 매니저
     /// </summary>
-    public GameObject gameObjectOfSoundManager;
+    //public GameObject gameObjectOfSoundManager;
 
     /// <summary>
     /// 메인 카메라
     /// </summary>
-    public GameObject gameObjectOfMainCamera;
+    //public GameObject gameObjectOfMainCamera;
 
     /// <summary>
     /// 배경 오브젝트들
     /// </summary>
-    public GameObject gameObjectOfBackGround;
+    //public GameObject gameObjectOfBackGround;
 
 
 

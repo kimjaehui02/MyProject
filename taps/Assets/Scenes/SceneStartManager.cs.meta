@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 0791bf87dd517e14585c9ebb51928598
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - realBattleManager: {instanceID: 0}
+  - gameObjectOfBattleUi: {instanceID: 0}
+  - gameObjectOfBaseUi: {instanceID: 0}
+  - gameObjectOfPopUpUi: {instanceID: 0}
+  - townManager: {instanceID: 0}
+  - gameObjectOfPlayable: {fileID: 6925038388912042187, guid: 3b51b98da4241fd43bf3692a6a8b38c6, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

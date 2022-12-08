@@ -64,11 +64,20 @@ public class TownManager : MonoBehaviour
         width = height * Screen.width / Screen.height;
     }
 
+    private void Update()
+    {
+        //Game.GetComponent<RectTransform>().position = Input.mousePosition;
+        Spritechange();
+        BackGroundManage();
+        //PickParty();
+    }
+
     void FixedUpdate()
     {
         LimitCameraArea();
 
     }
+
 
     void LimitCameraArea()
     {
@@ -118,13 +127,7 @@ public class TownManager : MonoBehaviour
 
     //public GameObject Game;
 
-    private void Update()
-    {
-        //Game.GetComponent<RectTransform>().position = Input.mousePosition;
-        Spritechange();
-        BackGroundManage();
-        //PickParty();
-    }
+
 
     private void PickParty()
     {
