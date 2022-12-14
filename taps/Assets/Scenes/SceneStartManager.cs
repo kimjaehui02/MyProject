@@ -70,18 +70,18 @@ public class SceneStartManager : MonoBehaviour
     /// <summary>
     /// 화면의 배경의 부모
     /// </summary>
-    public List<GameObject> listGameObjectOfBackGround;
+    public List<GameObject> listGameObjectOfBackGroundPrefab;
 
 
     /// <summary>
     /// 게임의 바닥
     /// </summary>
-    public List<GameObject> listGameObjectOfGround;
+    public List<GameObject> listGameObjectOfGroundPrefab;
 
     /// <summary>
     /// 화면의 일반 오브젝트들의 부모
     /// </summary>
-    public List<GameObject> listGameObjectOfNomalObject;
+    public List<GameObject> listGameObjectOfNomalObjectPrefab;
 
     #endregion
 
@@ -97,7 +97,12 @@ public class SceneStartManager : MonoBehaviour
     /// <summary>
     /// 플레이어가 조작하는 캐릭터입니다
     /// </summary>
-    public GameObject gameObjectOfPlayable;
+    public GameObject gameObjectOfPlayablePrefab;
+
+    #endregion
+
+    #region
+
 
     #endregion
 
@@ -110,13 +115,13 @@ public class SceneStartManager : MonoBehaviour
     private void MakeObject()
     {
         // 플레이어 생성
-        GameObject playable = Instantiate(gameObjectOfPlayable);
+        GameObject playable = Instantiate(gameObjectOfPlayablePrefab);
         // 뒷배경 생성
-        GameObject background = Instantiate(listGameObjectOfBackGround[Random.Range(0, listGameObjectOfBackGround.Count)]);
+        GameObject background = Instantiate(listGameObjectOfBackGroundPrefab[Random.Range(0, listGameObjectOfBackGroundPrefab.Count)]);
         // 바닥 생성
-        GameObject ground = Instantiate(listGameObjectOfGround[Random.Range(0, listGameObjectOfGround.Count)]);
+        GameObject ground = Instantiate(listGameObjectOfGroundPrefab[Random.Range(0, listGameObjectOfGroundPrefab.Count)]);
         // 일반 오브젝트들 생성
-        GameObject gameObjects = Instantiate(listGameObjectOfNomalObject[Random.Range(0, listGameObjectOfNomalObject.Count)]);
+        GameObject gameObjects = Instantiate(listGameObjectOfNomalObjectPrefab[Random.Range(0, listGameObjectOfNomalObjectPrefab.Count)]);
 
 
         realTownManager.SceneStart(playable.transform, mapSize, background.transform.GetChild(0).gameObject, background.transform.GetChild(1).gameObject);

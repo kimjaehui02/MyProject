@@ -95,6 +95,16 @@ public class GameManager : MonoBehaviour
         //SceneManager.LoadScene(name);
     }
 
+    public void PlusScene()
+    {
+
+    }
+
+    public void MinusScene()
+    {
+
+    }
+
 
     private void SceneFadeOut()
     {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerObjectManager : MonoBehaviour
 {
     public List<Animator> listAnimatorOfSprite;
@@ -37,10 +38,17 @@ public class PlayerObjectManager : MonoBehaviour
     public bool boolOfWarningColor;
 
     [SerializeField]
-    private int intOfHp;
+    public int intOfHp;
 
     [SerializeField]
-    private int intOfSta;
+    public int intOfSta;
+
+    public int number;
+
+    public List<GameObject> gameObjects;
+    public GameObject gameObjects2;
+
+    public bool enemytest;
 
     private void Awake()
     {
@@ -60,7 +68,18 @@ public class PlayerObjectManager : MonoBehaviour
 
     private void Update()
     {
-        BarColorChange();
+        //BarColorChange();
+
+        if(enemytest == false)
+        {
+            Color3();
+        }
+        else
+        {
+            BarColorChange();
+
+        }
+
     }
 
     /// <summary>
@@ -130,6 +149,44 @@ public class PlayerObjectManager : MonoBehaviour
             }
         }
 
+
+    }
+
+    public void Color2()
+    {
+        if (GameManager.instance.listRealPlayer[number].floatOfHp == 0)
+        {
+            gameObjects2.GetComponent<SpriteRenderer>().color = ColorOfWarning;
+
+
+        }
+        else
+        {
+            gameObjects2.GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 255 / 255f, 255 / 255f, 255 / 255f);
+
+        }
+
+        for (int i = 0; i < gameObjects.Count; i++)
+        {
+            gameObjects[i].SetActive(false);
+        }
+
+        for (int i = 0; i < GameManager.instance.listRealPlayer[number].LEVEL + 3; i++)
+        {
+            gameObjects[i].SetActive(true);
+            gameObjects[i].GetComponent<SpriteRenderer>().color = listColorOfHpBar[0];
+        }
+
+        for (int i = 0; i < GameManager.instance.listRealPlayer[number].floatOfHp; i++)
+        {
+            gameObjects[i].GetComponent<SpriteRenderer>().color = listColorOfHpBar[1];
+        }
+
+
+    }
+
+    public void Color3()
+    {
 
     }
 

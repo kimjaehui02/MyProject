@@ -19,14 +19,16 @@ public class RealPlayer : RealParty
     /// </summary>
     public int intOfType;
 
-    public void NewPlayer(float hp, float sta, int type)
+    public int LEVEL;
+
+    public void NewPlayer(float hp, float sta, int type, int level =0)
     {
         floatOfMaxHp = 4;
         floatOfMaxStamina = 8;
         floatOfHp = hp;
         floatOfStamina = sta;
         intOfType = type;
-
+        LEVEL = level; 
     }
 }
 
