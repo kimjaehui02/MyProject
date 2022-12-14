@@ -182,6 +182,11 @@ public class RealBattleManager : MonoBehaviour
             // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
             Check();
         }
+
+        //if()
+        //{
+        //
+        //}
     }
 
 
@@ -452,7 +457,7 @@ public class RealBattleManager : MonoBehaviour
                 break;
 
         }
-        listGameObjectOfParty[intOfPlayerFocus].GetComponent<PlayerObjectManager>().StaDamage();
+        listGameObjectOfParty[intOfPlayerFocus].GetComponent<PlayerObjectManager>().HpDamage();
     }
 
     #endregion

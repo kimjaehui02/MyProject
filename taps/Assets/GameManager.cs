@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     [field: SerializeField]
     public List<RealPlayer> listRealPlayer { get; set; }
 
+    public int Gold;
+
     #region 화면전환 처리용
 
     public GameObject FadeOutObject;

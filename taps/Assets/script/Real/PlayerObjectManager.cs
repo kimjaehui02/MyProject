@@ -63,7 +63,7 @@ public class PlayerObjectManager : MonoBehaviour
         listAnimatorOfSprite[2] = transform.GetChild(0).GetChild(1).GetComponent<Animator>();
         listAnimatorOfSprite[3] = transform.GetChild(0).GetChild(2).GetComponent<Animator>();
         listAnimatorOfSprite[4] = transform.GetChild(0).GetChild(3).GetComponent<Animator>();
-
+        Vector33 = game.transform.localPosition;
     }
 
     private void Update()
@@ -79,7 +79,7 @@ public class PlayerObjectManager : MonoBehaviour
             BarColorChange();
 
         }
-
+        Animinput2Move();
     }
 
     /// <summary>
@@ -211,6 +211,7 @@ public class PlayerObjectManager : MonoBehaviour
             intOfHp -= intOfWarning;
             intOfSta = 0;
         }
+        Animinput2();
     }
 
     /// <summary>
@@ -226,10 +227,73 @@ public class PlayerObjectManager : MonoBehaviour
 
     public void Animinput()
     {
-        for(int i = 0; i < listAnimatorOfSprite.Count; i++)
+        for (int i = 0; i < listAnimatorOfSprite.Count; i++)
         {
-            listAnimatorOfSprite[i].SetTrigger("Attack");
+            //listAnimatorOfSprite[i].SetTrigger("Attack");
+            listAnimatorOfSprite[i].SetTrigger("Hit");
+            boolOfMove = true;
+        }
+    }
 
+    public void Animinput2()
+    {
+        for (int i = 0; i < listAnimatorOfSprite.Count; i++)
+        {
+            listAnimatorOfSprite[i].SetTrigger("Hit");
+            boolOfMove = true;
+        }
+    }
+
+    public bool boolOfMove;
+    private float floatOfMoveMax =0.5f;
+    public float floatOfMove;
+
+    public Vector3 Vector33;
+    public GameObject game;
+    public void Animinput2Move()
+    {
+        if(boolOfMove == false)
+        {
+            return;
+        }
+
+
+        if (0 < floatOfMove && floatOfMove < 0.05f)
+        {
+            game.transform.localPosition = new Vector3(0.2f + Vector33.x, Vector33.y, Vector33.z);
+        }
+
+        if (0.05f< floatOfMove && floatOfMove < 0.1f)
+        {
+            game.transform.localPosition = new Vector3(-0.2f + Vector33.x, Vector33.y, Vector33.z);
+        }
+
+        if (0.1f < floatOfMove && floatOfMove < 0.15f)
+        {
+            game.transform.localPosition = new Vector3(0.2f + Vector33.x, Vector33.y, Vector33.z);
+        }
+
+        if (0.15f < floatOfMove && floatOfMove < 0.20f)
+        {
+            game.transform.localPosition = new Vector3(-0.2f + Vector33.x, Vector33.y, Vector33.z);
+        }
+
+        if (0.20f < floatOfMove && floatOfMove < 0.25f)
+        {
+            game.transform.localPosition = new Vector3(0.2f + Vector33.x, Vector33.y, Vector33.z);
+        }
+
+        game.GetComponent<SpriteRenderer>().color = new Color(255/255f, 65/255f, 65/255f, 255/255f);
+
+        floatOfMove += Time.deltaTime;
+
+        if(floatOfMoveMax < floatOfMove)
+        {
+            floatOfMove = 0;
+            boolOfMove = false;
+            game.transform.localPosition = Vector33;
+            game.GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 255 / 255f, 255 / 255f, 255 / 255f);
+            Debug.Log(332);
         }
     }
 }
