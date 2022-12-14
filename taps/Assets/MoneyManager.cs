@@ -7,9 +7,17 @@ public class MoneyManager : MonoBehaviour
 {
     public Text text;
 
+    public string inputs;
+
+    public bool type;
+
     private void Update()
     {
-        text.text = "Gold : " + (GameManager.instance.Gold);
+        if(type)
+        text.text = inputs + (GameManager.instance.Gold);
+        else
+        text.text = inputs + (GameManager.instance.HpItem);
+
     }
 
 }

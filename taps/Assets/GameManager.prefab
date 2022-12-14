@@ -222,6 +222,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae50fb90da1e68c4eaf44b21066d888f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Gold: 0
+  HpItem: 0
+  map1: 
+  map2: 000000000000000000000000
+  map3: 000000000000000000000000
+  map4: 000000000000000000000000
+  map5: 000000000000000000000000
   FadeOutObject: {fileID: 579257479747600124}
   FadeOutObjectImage: {fileID: 0}
   sceneMoving: 0

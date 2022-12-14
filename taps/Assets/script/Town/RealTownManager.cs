@@ -39,13 +39,13 @@ public class RealTownManager : MonoBehaviour
         if (playerTransform.position.x > mapSize.x)
         {
             //Debug.Log(123);
-            GameManager.instance.MoveScene(GetVs[1]);
+            GameManager.instance.MoveScene(GetVs[1], +1);
 
         }
 
         if (playerTransform.position.x < -mapSize.x)
         {
-            GameManager.instance.MoveScene(GetVs[0]);
+            GameManager.instance.MoveScene(GetVs[0], -1);
         }
     }
 

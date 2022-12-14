@@ -168,7 +168,7 @@ public class RealBattleManager : MonoBehaviour
         {
             NomalUpdate();
             BattleUpdate();
-            Notetransform();
+            
             NoteOutCheck();
         }
 
@@ -187,6 +187,11 @@ public class RealBattleManager : MonoBehaviour
         //{
         //
         //}
+    }
+
+    private void FixedUpdate()
+    {
+        Notetransform();
     }
 
 
@@ -243,7 +248,7 @@ public class RealBattleManager : MonoBehaviour
     /// </summary>
     private void BattleUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Tab))
+        if(Input.GetKeyDown(KeyCode.Q))
         {
             intOfPlayerFocus++;
             intOfPlayerFocus %= listGameObjectOfParty.Count;
@@ -485,6 +490,10 @@ public class RealBattleManager : MonoBehaviour
         // 플레이어측을 생성합니다
         for (int i = 0; i < gm.Count; i++)
         {
+            if(gm[i].floatOfHp == 0)
+            {
+                continue;
+            }
             var party = Instantiate(listGameObjectOfPlayerPrefab[gm[i].intOfType]);
             party.transform.parent = gameObjectOfBattleObject.transform.GetChild(0);
 

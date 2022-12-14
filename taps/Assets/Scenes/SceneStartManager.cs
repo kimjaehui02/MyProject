@@ -117,11 +117,64 @@ public class SceneStartManager : MonoBehaviour
         // 플레이어 생성
         GameObject playable = Instantiate(gameObjectOfPlayablePrefab);
         // 뒷배경 생성
-        GameObject background = Instantiate(listGameObjectOfBackGroundPrefab[Random.Range(0, listGameObjectOfBackGroundPrefab.Count)]);
+
+
+        GameObject background;
         // 바닥 생성
-        GameObject ground = Instantiate(listGameObjectOfGroundPrefab[Random.Range(0, listGameObjectOfGroundPrefab.Count)]);
+        GameObject ground; 
         // 일반 오브젝트들 생성
-        GameObject gameObjects = Instantiate(listGameObjectOfNomalObjectPrefab[Random.Range(0, listGameObjectOfNomalObjectPrefab.Count)]);
+        GameObject gameObjects;
+
+        switch (GameManager.instance.mapnumber)
+        {
+            case 2:
+                background = Instantiate(listGameObjectOfBackGroundPrefab[GameManager.instance.map1[0]]);
+                // 바닥 생성
+                ground = Instantiate(listGameObjectOfGroundPrefab[GameManager.instance.map1[1]]);
+                // 일반 오브젝트들 생성
+                gameObjects = Instantiate(listGameObjectOfNomalObjectPrefab[GameManager.instance.map1[2]]);
+                break;
+
+            case 3:
+                background = Instantiate(listGameObjectOfBackGroundPrefab[GameManager.instance.map2[0]]);
+                // 바닥 생성
+                ground = Instantiate(listGameObjectOfGroundPrefab[GameManager.instance.map2[1]]);
+                // 일반 오브젝트들 생성
+                gameObjects = Instantiate(listGameObjectOfNomalObjectPrefab[GameManager.instance.map2[2]]);
+                break;
+
+            case 4:
+                background = Instantiate(listGameObjectOfBackGroundPrefab[GameManager.instance.map3[0]]);
+                // 바닥 생성
+                ground = Instantiate(listGameObjectOfGroundPrefab[GameManager.instance.map3[1]]);
+                // 일반 오브젝트들 생성
+                gameObjects = Instantiate(listGameObjectOfNomalObjectPrefab[GameManager.instance.map3[2]]);
+                break;
+
+            case 5:
+                background = Instantiate(listGameObjectOfBackGroundPrefab[GameManager.instance.map4[0]]);
+                // 바닥 생성
+                ground = Instantiate(listGameObjectOfGroundPrefab[GameManager.instance.map4[1]]);
+                // 일반 오브젝트들 생성
+                gameObjects = Instantiate(listGameObjectOfNomalObjectPrefab[GameManager.instance.map4[2]]);
+                break;
+
+            case 6:
+                background = Instantiate(listGameObjectOfBackGroundPrefab[GameManager.instance.map5[0]]);
+                // 바닥 생성
+                ground = Instantiate(listGameObjectOfGroundPrefab[GameManager.instance.map5[1]]);
+                // 일반 오브젝트들 생성
+                gameObjects = Instantiate(listGameObjectOfNomalObjectPrefab[GameManager.instance.map5[2]]);
+                break;
+            default:
+                background = Instantiate(listGameObjectOfBackGroundPrefab[GameManager.instance.map1[0]]);
+                // 바닥 생성
+                ground = Instantiate(listGameObjectOfGroundPrefab[GameManager.instance.map1[1]]);
+                // 일반 오브젝트들 생성
+                gameObjects = Instantiate(listGameObjectOfNomalObjectPrefab[GameManager.instance.map1[2]]);
+                break;
+        }
+
 
 
         realTownManager.SceneStart(playable.transform, mapSize, background.transform.GetChild(0).gameObject, background.transform.GetChild(1).gameObject);

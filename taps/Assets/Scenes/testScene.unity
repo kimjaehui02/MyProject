@@ -2804,15 +2804,14 @@ MonoBehaviour:
   listGameObjectOfBackGroundPrefab:
   - {fileID: 1301225296849412762, guid: 9bdbf82a8cb34b14bab2102eb3da981a, type: 3}
   - {fileID: 1301225296849412762, guid: 6de5e992bc908c146beef18bcb3c44f2, type: 3}
-  - {fileID: 1301225296849412762, guid: 9bdbf82a8cb34b14bab2102eb3da981a, type: 3}
   listGameObjectOfGroundPrefab:
-  - {fileID: 107621267934589859, guid: 4630df875cd720045baa44a4dbefb16a, type: 3}
   - {fileID: 107621267934589859, guid: 6b0f96c563380964d814e810cb9f360f, type: 3}
+  - {fileID: 107621267934589859, guid: 4630df875cd720045baa44a4dbefb16a, type: 3}
   - {fileID: 107621267934589859, guid: 33e7f7ca4c708eb429de75b2fbb26f58, type: 3}
   listGameObjectOfNomalObjectPrefab:
   - {fileID: 3179901481878241255, guid: f739fc0e72de0614fa31b5b0dc4f9195, type: 3}
-  - {fileID: 2065682138017197690, guid: 02720a309c052f344971515493de5ccd, type: 3}
   - {fileID: 9148584486717643142, guid: 8f7c0daca739e1a4fa87d6ccf5e6792b, type: 3}
+  - {fileID: 2065682138017197690, guid: 02720a309c052f344971515493de5ccd, type: 3}
   realCameraManager: {fileID: 617360210}
   gameObjectOfPlayablePrefab: {fileID: 6925038388912042187, guid: 3b51b98da4241fd43bf3692a6a8b38c6, type: 3}
 --- !u!1 &990708722
@@ -3185,10 +3184,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5033694674333378999, guid: 8fedbbc682820e24b9793ed480863be9, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8640081795665919452, guid: 8fedbbc682820e24b9793ed480863be9, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -3613,7 +3608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneStartManager: {fileID: 973080222}
   listIntOfBattleNote: 00000000000000000000000000000000
-  floatOfTimeMax: 2
+  floatOfTimeMax: 1
   floatOfTime: 0
   listGameObjectOfPlayer: []
   listGameObjectOfEnemy: []

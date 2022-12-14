@@ -13,6 +13,8 @@ public class MiniChar : MonoBehaviour
 
     public List<Color> GetColor;
 
+    public Button Buttons;
+
     private void Update()
     {
         text.text = "Lv." + (GameManager.instance.listRealPlayer[number].LEVEL);
@@ -47,8 +49,21 @@ public class MiniChar : MonoBehaviour
         }
 
 
+        if(GameManager.instance.HpItem == 0)
+        {
+            Buttons.interactable = false;
+        }
+        else
+        {
+            Buttons.interactable = true;
+        }
 
+    }
 
+    public void ButtonCLick()
+    {
+        GameManager.instance.HpItem--;
+        GameManager.instance.listRealPlayer[number].floatOfHp++;
     }
 
 }

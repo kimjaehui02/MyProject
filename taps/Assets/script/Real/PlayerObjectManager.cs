@@ -45,7 +45,7 @@ public class PlayerObjectManager : MonoBehaviour
 
     public int number;
 
-    public List<GameObject> gameObjects;
+    //public List<GameObject> gameObjects;
     public GameObject gameObjects2;
 
     public bool enemytest;
@@ -72,7 +72,7 @@ public class PlayerObjectManager : MonoBehaviour
 
         if(enemytest == false)
         {
-            Color3();
+            Color2();
         }
         else
         {
@@ -166,20 +166,25 @@ public class PlayerObjectManager : MonoBehaviour
 
         }
 
-        for (int i = 0; i < gameObjects.Count; i++)
+        for (int i = 0; i < listSpriteRendererOfHpBar.Count; i++)
         {
-            gameObjects[i].SetActive(false);
+            listSpriteRendererOfHpBar[i].gameObject.SetActive(false);
         }
 
         for (int i = 0; i < GameManager.instance.listRealPlayer[number].LEVEL + 3; i++)
         {
-            gameObjects[i].SetActive(true);
-            gameObjects[i].GetComponent<SpriteRenderer>().color = listColorOfHpBar[0];
+            Debug.Log(i);
+            Debug.Log(GameManager.instance.listRealPlayer[number].LEVEL + 3);
+
+
+
+            listSpriteRendererOfHpBar[i].gameObject.SetActive(true);
+            listSpriteRendererOfHpBar[i].GetComponent<SpriteRenderer>().color = listColorOfHpBar[0];
         }
 
         for (int i = 0; i < GameManager.instance.listRealPlayer[number].floatOfHp; i++)
         {
-            gameObjects[i].GetComponent<SpriteRenderer>().color = listColorOfHpBar[1];
+            listSpriteRendererOfHpBar[i].GetComponent<SpriteRenderer>().color = listColorOfHpBar[1];
         }
 
 
@@ -205,12 +210,24 @@ public class PlayerObjectManager : MonoBehaviour
     /// <param name="damage"></param>
     public void HpDamage(int damage = 1)
     {
-        intOfHp -= damage;
-        if(intOfWarning > 0)
+        if(enemytest == false)
         {
-            intOfHp -= intOfWarning;
-            intOfSta = 0;
+            GameManager.instance.listRealPlayer[number].floatOfHp--;
+            if(GameManager.instance.listRealPlayer[number].floatOfHp == -1)
+            {
+                GameManager.instance.listRealPlayer[number].floatOfHp = 0;
+            }
         }
+        else
+        {
+            intOfHp -= damage;
+
+        }
+        //if(intOfWarning > 0)
+        //{
+        //    intOfHp -= intOfWarning;
+        //    intOfSta = 0;
+        //}
         Animinput2();
     }
 
@@ -229,9 +246,9 @@ public class PlayerObjectManager : MonoBehaviour
     {
         for (int i = 0; i < listAnimatorOfSprite.Count; i++)
         {
-            //listAnimatorOfSprite[i].SetTrigger("Attack");
-            listAnimatorOfSprite[i].SetTrigger("Hit");
-            boolOfMove = true;
+            listAnimatorOfSprite[i].SetTrigger("Attack");
+            //listAnimatorOfSprite[i].SetTrigger("Hit");
+            //boolOfMove = true;
         }
     }
 

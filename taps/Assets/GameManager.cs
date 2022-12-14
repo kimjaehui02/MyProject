@@ -34,6 +34,16 @@ public class GameManager : MonoBehaviour
 
     public int Gold;
 
+    public int HpItem;
+
+    public int mapnumber;
+
+    public List<int> map1;
+    public List<int> map2;
+    public List<int> map3;
+    public List<int> map4;
+    public List<int> map5;
+
     #region 화면전환 처리용
 
     public GameObject FadeOutObject;
@@ -61,6 +71,30 @@ public class GameManager : MonoBehaviour
         //MoveScene("TownScene");
         PlayerStart();
         PlayerStart();
+        PlayerStart(2);
+        PlayerStart(3);
+
+
+        map1[0] = (Random.Range(0, 2));
+        map1[1] = (Random.Range(0, 3));
+        map1[2] = (Random.Range(0, 3));
+
+        map2[0] = (Random.Range(0, 2));
+        map2[1] = (Random.Range(0, 3));
+        map2[2] = (Random.Range(0, 3));
+
+        map3[0] = (Random.Range(0, 2));
+        map3[1] = (Random.Range(0, 3));
+        map3[2] = (Random.Range(0, 3));
+
+        map4[0] = (Random.Range(0, 2));
+        map4[1] = (Random.Range(0, 3));
+        map1[2] = (Random.Range(0, 3));
+
+        map5[0] = (Random.Range(0, 2));
+        map5[1] = (Random.Range(0, 3));
+        map5[2] = (Random.Range(0, 3));
+
 
     }
     private void Awake()
@@ -69,6 +103,7 @@ public class GameManager : MonoBehaviour
         FadeOutObjectImage = FadeOutObject.GetComponent<Image>();
         sceneMoving = false;
         listRealPlayer = new();
+        Gold += 1000;
     }
 
     private void Update()
@@ -79,7 +114,7 @@ public class GameManager : MonoBehaviour
 
     #region 씬이동 및 게임 운용에 쓰이는 함수
 
-    public void MoveScene(string sname)
+    public void MoveScene(string sname ,int input)
     {
         // 씬이 이동중이면 또 이동하지 않게 만듭니다
         if(sceneMoving == true)
@@ -89,7 +124,7 @@ public class GameManager : MonoBehaviour
 
         // 씬이 이동중이라고 알려줍니다
         sceneMoving = true;
-
+        mapnumber += input;
         // 
         FadeOutObject.SetActive(true);
         stringOfSceneName = sname;
@@ -152,12 +187,12 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    public void PlayerStart()
+    public void PlayerStart(int intint =1)
     {
 
 
         RealPlayer realPlayer = new();
-        realPlayer.NewPlayer(listRealPlayer.Count+1f, listRealPlayer.Count, listRealPlayer.Count);
+        realPlayer.NewPlayer(intint, listRealPlayer.Count, listRealPlayer.Count);
 
         listRealPlayer.Add(realPlayer);
         Debug.Log(listRealPlayer.Count);

@@ -62,4 +62,50 @@ public class buttonManager : MonoBehaviour
         }
         game.SetActive(false);
     }
+
+    private void OnMouseUpAsButton()
+    {
+        Clicking();
+    }
+
+    public int input;
+
+    public void Clicking()
+    {
+        switch (input)
+        {
+            case 0:
+                if(GameManager.instance.Gold >= 500)
+                {
+                    GameManager.instance.Gold -= 500;
+                    for (int i = 0; i < GameManager.instance.listRealPlayer.Count; i++)
+                    {
+                        GameManager.instance.listRealPlayer[i].LEVEL++;
+                    }
+                }
+                break;
+            case 1:
+                if (GameManager.instance.Gold >= 300)
+                {
+                    GameManager.instance.Gold -= 300;
+                    for (int i = 0; i < GameManager.instance.listRealPlayer.Count; i++)
+                    {
+                        GameManager.instance.listRealPlayer[i].floatOfHp++;
+                    }
+                }
+
+                break;
+            case 2:
+                if (GameManager.instance.Gold >= 100)
+                {
+                    GameManager.instance.Gold -= 100;
+
+                    GameManager.instance.HpItem++;
+                }
+
+                break;
+
+        }
+
+    }
 }

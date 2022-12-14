@@ -7,6 +7,6 @@ public class Titlemanager : MonoBehaviour
 
     public void MoveScene()
     {
-        GameManager.instance.MoveScene("TownScene");
+        GameManager.instance.MoveScene("TownScene", 0);
     }
 }
