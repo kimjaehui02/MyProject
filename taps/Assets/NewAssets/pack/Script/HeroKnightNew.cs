@@ -15,6 +15,7 @@ public class HeroKnightNew : MonoBehaviour
 
     public List<SpriteRenderer> spriteRenderers;
 
+
     private bool isBlocking = false;
 
     public float attackRange = 2.0f;
@@ -88,22 +89,17 @@ public class HeroKnightNew : MonoBehaviour
 
             attackTime = 0.0f;
 
-
-
-            if (IsAttacking())
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange);
+            foreach (Collider2D collider in colliders)
             {
-
-                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange);
-                foreach (Collider2D collider in colliders)
+                if (collider.CompareTag("Enemy"))
                 {
-                    if (collider.CompareTag("Enemy"))
-                    {
-                        AttackEnemy(collider.gameObject);
-                    }
+                    AttackEnemy(collider.gameObject);
                 }
             }
         }
     }
+
 
 
     private void HandleParry()
@@ -189,7 +185,7 @@ public class HeroKnightNew : MonoBehaviour
     private void AttackEnemy(GameObject enemy)
     {
         // 적을 공격하는 로직 작성
-        // 예시: enemy.GetComponent<Enemy>().TakeDamage(damageAmount)
+        // 예시: enemy.GetComponent<Enemy>().TakeDamage(damageAmount);
 
         SpriteRenderer[] childRenderers = enemy.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer renderer in childRenderers)
@@ -197,9 +193,25 @@ public class HeroKnightNew : MonoBehaviour
             StartCoroutine(FlashAndShake(renderer));
         }
 
-        // 공격 로직 실행 후 공격 상태 종료
-        isAttacking = false;
+        // 적 오브젝트를 튕기고 사라지게 처리
+        Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+        Collider2D enemyCollider = enemy.GetComponent<Collider2D>();
+
+        // 튕기는 힘과 방향 설정
+        float bounceForce = 5f;
+        Vector2 bounceDirection = enemy.transform.position - transform.position;
+        bounceDirection.Normalize();
+
+        // 튕기는 힘을 가하고 적 오브젝트 비활성화
+        enemyRb.velocity = Vector2.zero;
+        enemyRb.AddForce(bounceDirection * bounceForce, ForceMode2D.Impulse);
+        enemyCollider.enabled = false;
+
+        // 적 오브젝트를 일정 시간 후에 제거
+        float destroyDelay = 1f;
+        Destroy(enemy, destroyDelay);
     }
+
 
     private IEnumerator<WaitForSeconds> FlashAndShake(SpriteRenderer renderer)
     {

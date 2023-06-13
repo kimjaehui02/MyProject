@@ -1270,7 +1270,7 @@ MonoBehaviour:
   - {fileID: 5460220608918051029}
   - {fileID: 5460220607958674048}
   - {fileID: 5460220608561809568}
-  attackRange: 10
+  attackRange: 2
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
