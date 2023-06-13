@@ -1255,7 +1255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
-  jumpPower: 3
+  jumpPower: 7.5
   animators:
   - {fileID: 3476624091997662142}
   - {fileID: 5460220607814817376}
@@ -1270,6 +1270,10 @@ MonoBehaviour:
   - {fileID: 5460220608918051029}
   - {fileID: 5460220607958674048}
   - {fileID: 5460220608561809568}
+  attackRange: 4.19
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!61 &5460220608898963571
 BoxCollider2D:
   m_ObjectHideFlags: 0

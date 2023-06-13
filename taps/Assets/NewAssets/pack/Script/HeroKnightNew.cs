@@ -17,13 +17,13 @@ public class HeroKnightNew : MonoBehaviour
 
     private bool isBlocking = false;
 
-
+    public float attackRange = 2.0f;
+    public LayerMask enemyLayer;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        //groundSensor = transform.Find("GroundSensor").GetComponent<Sensor_HeroKnight>();
-
+        // groundSensor = transform.Find("GroundSensor").GetComponent<Sensor_HeroKnight>();
     }
 
     private void Update()
@@ -58,6 +58,11 @@ public class HeroKnightNew : MonoBehaviour
         if (isGrounded && Input.GetKeyDown(KeyCode.Space)) // Space 키로 점프
         {
             rb.AddForce(new Vector2(0f, jumpPower), ForceMode2D.Impulse);
+
+            foreach (var animator in animators)
+            {
+                animator.SetTrigger("Jump");
+            }
         }
     }
 
@@ -80,6 +85,17 @@ public class HeroKnightNew : MonoBehaviour
             }
 
             attackTime = 0.0f;
+            if (IsAttacking())
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange);
+                foreach (Collider2D collider in colliders)
+                {
+                    if (collider.CompareTag("Enemy"))
+                    {
+                        AttackEnemy(collider.gameObject);
+                    }
+                }
+            }
         }
     }
 
@@ -98,11 +114,11 @@ public class HeroKnightNew : MonoBehaviour
         {
             if (collider.CompareTag("Enemy"))
             {
-                //LittleEnemy enemy = collider.GetComponent<LittleEnemy>();
-                //if (enemy != null && enemy.CanBeParried())
-                //{
-                //    enemy.Parry();
-                //}
+                // LittleEnemy enemy = collider.GetComponent<LittleEnemy>();
+                // if (enemy != null && enemy.CanBeParried())
+                // {
+                //     enemy.Parry();
+                // }
             }
         }
     }
@@ -152,17 +168,6 @@ public class HeroKnightNew : MonoBehaviour
                     animator.SetInteger("AnimState", 0);
                 }
             }
-
-
-        }
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.AddForce(new Vector2(0f, jumpPower), ForceMode2D.Impulse);
-
-            foreach (var animator in animators)
-            {
-                animator.SetTrigger("Jump");
-            }
         }
     }
 
@@ -173,7 +178,6 @@ public class HeroKnightNew : MonoBehaviour
             spriteRenderer.flipX = flipX;
         }
     }
-
 
     private bool IsAttacking()
     {
@@ -187,4 +191,48 @@ public class HeroKnightNew : MonoBehaviour
         }
         return false;
     }
+
+    private void AttackEnemy(GameObject enemy)
+    {
+        // 적을 공격하는 로직 작성
+        // 예시: enemy.GetComponent<Enemy>().TakeDamage(damageAmount);
+
+        SpriteRenderer[] childRenderers = enemy.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer renderer in childRenderers)
+        {
+            StartCoroutine(FlashAndShake(renderer));
+        }
+        Debug.Log("적을 공격했습니다!");
+    }
+
+    private IEnumerator<WaitForSeconds> FlashAndShake(SpriteRenderer renderer)
+    {
+        float flashDuration = 0.1f;
+        float shakeDuration = 0.1f;
+        float shakeMagnitude = 0.1f;
+
+        // 적 오브젝트를 빨강색으로 변경
+        Color originalColor = renderer.color;
+        renderer.color = Color.red;
+
+        // 순간적인 피격 효과를 위한 위치 진동
+        Vector3 originalPosition = renderer.transform.localPosition;
+        float elapsedTime = 0f;
+        while (elapsedTime < shakeDuration)
+        {
+            float offsetX = Random.Range(-shakeMagnitude, shakeMagnitude);
+            float offsetY = Random.Range(-shakeMagnitude, shakeMagnitude);
+            renderer.transform.localPosition = originalPosition + new Vector3(offsetX, offsetY, 0f);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        renderer.transform.localPosition = originalPosition;
+
+        // 일정 시간 대기
+        yield return new WaitForSeconds(flashDuration);
+
+        // 적 오브젝트의 색상 원상 복구
+        renderer.color = originalColor;
+    }
+
 }
