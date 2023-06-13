@@ -9,7 +9,7 @@ public class HeroKnightNew : MonoBehaviour
     public Rigidbody2D rb;
     public Sensor_HeroKnightTab2 groundSensor;
     private bool isGrounded = false;
-    private int attackNumber = 0;
+    private bool isAttacking = false; // 추가: 공격 중 여부를 저장하는 변수
     private float attackTime = 0.0f;
     private float idleTime = 0.0f;
 
@@ -39,7 +39,7 @@ public class HeroKnightNew : MonoBehaviour
     {
         float inputX = Input.GetAxis("Horizontal");
 
-        if (!IsAttacking()) // 공격 중이 아닐 때만 방향 전환 처리
+        if (!isAttacking) // 수정: 공격 중이 아닐 때만 방향 전환 처리
         {
             if (inputX > 0)
             {
@@ -66,6 +66,8 @@ public class HeroKnightNew : MonoBehaviour
         }
     }
 
+    private int attackNumber = 0;
+
     private void HandleAttacks()
     {
         attackTime += Time.deltaTime;
@@ -85,8 +87,12 @@ public class HeroKnightNew : MonoBehaviour
             }
 
             attackTime = 0.0f;
+
+
+
             if (IsAttacking())
             {
+
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange);
                 foreach (Collider2D collider in colliders)
                 {
@@ -98,6 +104,7 @@ public class HeroKnightNew : MonoBehaviour
             }
         }
     }
+
 
     private void HandleParry()
     {
@@ -125,7 +132,7 @@ public class HeroKnightNew : MonoBehaviour
 
     private void HandleBlock()
     {
-        if (Input.GetKeyDown(KeyCode.C) && !isBlocking)
+        if (Input.GetKeyDown(KeyCode.C) && !isBlocking && !isAttacking) // 수정: 공격 중이 아닐 때만 블록 가능
         {
             isBlocking = true;
 
@@ -179,30 +186,19 @@ public class HeroKnightNew : MonoBehaviour
         }
     }
 
-    private bool IsAttacking()
-    {
-        foreach (var animator in animators)
-        {
-            AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
-            if (currentState.IsTag("Attack") && currentState.normalizedTime < 1f)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void AttackEnemy(GameObject enemy)
     {
         // 적을 공격하는 로직 작성
-        // 예시: enemy.GetComponent<Enemy>().TakeDamage(damageAmount);
+        // 예시: enemy.GetComponent<Enemy>().TakeDamage(damageAmount)
 
         SpriteRenderer[] childRenderers = enemy.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer renderer in childRenderers)
         {
             StartCoroutine(FlashAndShake(renderer));
         }
-        Debug.Log("적을 공격했습니다!");
+
+        // 공격 로직 실행 후 공격 상태 종료
+        isAttacking = false;
     }
 
     private IEnumerator<WaitForSeconds> FlashAndShake(SpriteRenderer renderer)
@@ -235,4 +231,28 @@ public class HeroKnightNew : MonoBehaviour
         renderer.color = originalColor;
     }
 
+    private bool IsAttacking()
+    {
+        foreach (var animator in animators)
+        {
+
+            AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
+            if (currentState.IsName("Attack1") && currentState.normalizedTime < 1f)
+            {
+                Debug.Log(11111111111111);
+                return true;
+            }
+            if (currentState.IsName("Attack2") && currentState.normalizedTime < 1f)
+            {
+                Debug.Log(222222222222222);
+                return true;
+            }
+            if (currentState.IsName("Attack3") && currentState.normalizedTime < 1f)
+            {
+                Debug.Log(33333333333);
+                return true;
+            }
+        }
+        return false;
+    }
 }
