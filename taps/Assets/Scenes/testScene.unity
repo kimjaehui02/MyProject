@@ -2813,7 +2813,7 @@ MonoBehaviour:
   - {fileID: 9148584486717643142, guid: 8f7c0daca739e1a4fa87d6ccf5e6792b, type: 3}
   - {fileID: 2065682138017197690, guid: 02720a309c052f344971515493de5ccd, type: 3}
   realCameraManager: {fileID: 617360210}
-  gameObjectOfPlayablePrefab: {fileID: 6925038388912042187, guid: 3b51b98da4241fd43bf3692a6a8b38c6, type: 3}
+  gameObjectOfPlayablePrefab: {fileID: 5460220608898963569, guid: 0fb9fbf1bc246f54aaed31e09678929a, type: 3}
 --- !u!1 &990708722
 GameObject:
   m_ObjectHideFlags: 0
