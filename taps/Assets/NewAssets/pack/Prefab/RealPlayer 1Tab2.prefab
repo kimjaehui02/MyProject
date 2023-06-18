@@ -1232,7 +1232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5460220608898963569}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -12.72, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1264,16 +1264,16 @@ MonoBehaviour:
   - {fileID: 5460220608561809569}
   rb: {fileID: 0}
   groundSensor: {fileID: 5614452906992525710}
+  attackRange: 2
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
   spriteRenderers:
   - {fileID: 4330792405868147878}
   - {fileID: 5460220607814817407}
   - {fileID: 5460220608918051029}
   - {fileID: 5460220607958674048}
   - {fileID: 5460220608561809568}
-  attackRange: 2
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!61 &5460220608898963571
 BoxCollider2D:
   m_ObjectHideFlags: 0

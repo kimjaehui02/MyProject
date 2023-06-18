@@ -134,7 +134,7 @@ MonoBehaviour:
   moveSpeed: 3
   isGrounded: 1
   pushForce: 10
-  pushDistance: 1.5
+  pushDistance: 2
   flashDuration: 0.1
   shakeDuration: 0.1
   shakeMagnitude: 0.1
