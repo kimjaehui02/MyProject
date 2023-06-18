@@ -63,7 +63,7 @@ public class SceneStartManager : MonoBehaviour
 
     #region 기본 화면 생성
     /// <summary>
-    /// 화면의 배경과 일반 오브젝트들을 관리하는 매니저
+    /// 화면의 배경과 일반 오브젝트들을 관리하는 매니저.
     /// </summary>
     public RealTownManager realTownManager;
 
