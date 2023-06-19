@@ -4,55 +4,61 @@ using UnityEngine;
 
 public class HealthSubject : MonoBehaviour
 {
-    public int maxHealth;
-    public int currentHealth;
-    private List<IHealthObserver> observers = new List<IHealthObserver>();
+    /// <summary>
+    /// 최대 체력
+    /// </summary>
+    public int intOfMaxHealth;
+    /// <summary>
+    /// 현재 체력
+    /// </summary>
+    public int intOftHealth;
+    public List<IHealthObserver> ListOfobservers;
 
-    public int MaxHealth
-    {
-        get { return maxHealth; }
-        set { maxHealth = value; }
-    }
-
-    public int CurrentHealth
-    {
-        get { return currentHealth; }
-        set { currentHealth = value; }
-    }
 
     public void RegisterObserver(IHealthObserver observer)
     {
-        observers.Add(observer);
+        ListOfobservers.Add(observer);
     }
 
     public void RemoveObserver(IHealthObserver observer)
     {
-        observers.Remove(observer);
+        ListOfobservers.Remove(observer);
     }
 
     public void NotifyObservers()
     {
-        foreach (var observer in observers)
+        foreach (var observer in ListOfobservers)
         {
-            observer.OnHealthChanged(currentHealth, maxHealth);
+            observer.OnHealthChanged(intOftHealth, intOfMaxHealth);
         }
     }
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        if (currentHealth < 0)
-            currentHealth = 0;
+        intOftHealth -= damage;
+        if (intOftHealth < 0)
+        {
+            intOftHealth = 0;
+        }
+
 
         NotifyObservers();
     }
 
     public void Heal(int amount)
     {
-        currentHealth += amount;
-        if (currentHealth > maxHealth)
-            currentHealth = maxHealth;
+        intOftHealth += amount;
+        if (intOftHealth > intOfMaxHealth)
+        {
+            intOftHealth = intOfMaxHealth;
+        }
+
 
         NotifyObservers();
     }
+}
+
+public interface IHealthObserver
+{
+    void OnHealthChanged(int currentHealth, int maxHealth);
 }

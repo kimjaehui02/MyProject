@@ -258,6 +258,7 @@ MonoBehaviour:
   - {fileID: 5460220608673958614}
   - {fileID: 5460220608586730312}
   healthObject: {fileID: 0}
+  healthSubject: {fileID: 5460220607769318720}
 --- !u!114 &5460220607769318720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,8 +271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c8037212950f045b626b3d2d6eb8ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
-  currentHealth: 1
+  intOfMaxHealth: 3
+  intOftHealth: 3
 --- !u!114 &5460220607769318722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8029d103574e7b64cb3013e45a9fbcff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  staminaObject: {fileID: 5460220609456155291}
+  gameObjectOfStamina: {fileID: 5460220609456155291}
 --- !u!114 &5460220607769318721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,8 +298,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea4e3b3353cf09a4a9cd446dcb3d2efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxStamina: 100
-  currentStamina: 50
+  floatOfMaxStamina: 100
+  floatOfStamina: 10
+  listStaminaObserverOfObserver:
+  - {fileID: 5460220607769318722}
 --- !u!1 &5460220607814817405
 GameObject:
   m_ObjectHideFlags: 0

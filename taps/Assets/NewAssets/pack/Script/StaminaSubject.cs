@@ -4,60 +4,69 @@ using UnityEngine;
 
 public class StaminaSubject : MonoBehaviour
 {
-    public float maxStamina;
-    public float currentStamina;
-    private List<StaminaObserver> observers = new List<StaminaObserver>();
+    /// <summary>
+    /// 최대 스태미너
+    /// </summary>
+    public float floatOfMaxStamina;
+    /// <summary>
+    /// 현재 스태미너
+    /// </summary>
+    public float floatOfStamina;
+    /// <summary>
+    /// 스테미너들의 옵저버 리스트
+    /// </summary>
+    public List<StaminaObserver> listStaminaObserverOfObserver;
 
-    public float MaxStamina
-    {
-        get { return maxStamina; }
-        set { maxStamina = value; }
-    }
-
-    public float CurrentStamina
-    {
-        get { return currentStamina; }
-        set { currentStamina = value; }
-    }
-
+    /// <summary>
+    /// 옵저버 리스트에 등록시킵니다
+    /// </summary>
+    /// <param name="observer"></param>
     public void RegisterObserver(StaminaObserver observer)
     {
-        observers.Add(observer);
+        // 옵저버 리스트에 옵저버를 추가합니다
+        listStaminaObserverOfObserver.Add(observer);
     }
 
     public void RemoveObserver(StaminaObserver observer)
     {
-        observers.Remove(observer);
+        // 옵저버 리스트에 옵저버를 제거합니다
+        listStaminaObserverOfObserver.Remove(observer);
     }
 
     public void NotifyObservers()
     {
-        foreach (var observer in observers)
+        foreach (var observer in listStaminaObserverOfObserver)
         {
-            observer.OnStaminaChanged(currentStamina, maxStamina);
+            observer.OnStaminaChanged(floatOfStamina, floatOfMaxStamina); // 옵저버들에게 스태미너 변경을 알림
         }
     }
 
     public void ConsumeStamina(float amount)
     {
-        currentStamina -= amount;
-        if (currentStamina < 0)
-            currentStamina = 0;
+        floatOfStamina -= amount; // 스태미너 소비
+        if (floatOfStamina < 0)
+        {
+            floatOfStamina = 0; // 스태미너가 0보다 작으면 0으로 설정
+        }
 
-        NotifyObservers();
+        NotifyObservers(); // 옵저버들에게 스태미너 변경을 알림
     }
 
     public void RestoreStamina(float amount)
     {
-        currentStamina += amount;
-        if (currentStamina > maxStamina)
-            currentStamina = maxStamina;
+        floatOfStamina += amount; // 스태미너 회복
+        if (floatOfStamina > floatOfMaxStamina)
+        {
+            floatOfStamina = floatOfMaxStamina; // 스태미너가 최대 스태미너를 초과하면 최대 스태미너로 설정
+        }
 
-        NotifyObservers();
+        NotifyObservers(); // 옵저버들에게 스태미너 변경을 알림
     }
+
+
 }
 
 public interface IStaminaObserver
 {
-    void OnStaminaChanged(float currentStamina, float maxStamina);
+    void OnStaminaChanged(float floatOfStamina, float floatOfMaxStamina);
 }
