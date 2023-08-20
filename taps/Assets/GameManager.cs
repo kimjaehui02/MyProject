@@ -196,6 +196,7 @@ public class GameManager : MonoBehaviour
 
         listRealPlayer.Add(realPlayer);
         Debug.Log(listRealPlayer.Count);
+        HpObserver hpObserver = new HpObserver();
     }
 
     #region ÄÚ·çÆ¾

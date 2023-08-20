@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class HeroKnightNew : MonoBehaviour
 {
+    #region 변수들
     public float speed = 4.0f; // 플레이어 이동 속도
     public float jumpPower = 7.5f; // 점프 힘
     public List<Animator> animators; // 애니메이터 리스트
@@ -16,7 +17,9 @@ public class HeroKnightNew : MonoBehaviour
     public float attackRange = 2.0f; // 공격 범위
     public LayerMask enemyLayer; // 적 레이어
     public List<SpriteRenderer> spriteRenderers; // 스프라이트 렌더러 리스트
+    #endregion
 
+    #region 기본 함수들
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>(); // Rigidbody2D 컴포넌트 가져오기
@@ -31,6 +34,9 @@ public class HeroKnightNew : MonoBehaviour
         HandleBlock(); // 방어 처리
         UpdateAnimation(); // 애니메이션 업데이트
     }
+    #endregion
+
+
 
     private void UpdateMovement()
     {

@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class StaminaSubject : MonoBehaviour
 {
+    #region 변수부분들
+
+    public Camera camera;
+
+
+
     /// <summary>
-    /// 최대 스태미너
+    /// ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴ
     /// </summary>
     public float floatOfMaxStamina;
     /// <summary>
@@ -17,6 +24,10 @@ public class StaminaSubject : MonoBehaviour
     /// </summary>
     public List<StaminaObserver> listStaminaObserverOfObserver;
 
+
+    #endregion
+
+
     /// <summary>
     /// 옵저버 리스트에 등록시킵니다
     /// </summary>
@@ -27,6 +38,10 @@ public class StaminaSubject : MonoBehaviour
         listStaminaObserverOfObserver.Add(observer);
     }
 
+    /// <summary>
+    /// ㅁㄴㅇㄴㅇㅁㄴㅇㅁㄴㅇ
+    /// </summary>
+    /// <param name="observer">1231</param>
     public void RemoveObserver(StaminaObserver observer)
     {
         // 옵저버 리스트에 옵저버를 제거합니다

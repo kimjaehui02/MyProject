@@ -43,6 +43,14 @@ public class HpObserver : MonoBehaviour, IHealthObserver
         {
             healthSubject.RegisterObserver(this);
             UpdateHealthObjects(healthSubject.intOftHealth);
+
+            Testnew testnew = new Testnew();
+            
         }
     }
+}
+
+public class Testnew
+{
+    int testint;
 }

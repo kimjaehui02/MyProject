@@ -89,6 +89,7 @@ public class SceneStartManager : MonoBehaviour
     private void Awake()
     {
         MakeObject();
+        HpObserver hpObserver = new HpObserver();
     }
 
     private void MakeObject()
